@@ -64,6 +64,7 @@ pub mod clip_line_ui;
 pub mod color_panel_ui;
 pub mod color_picker_ui;
 pub mod color_range_ui;
+pub mod compact;
 pub mod color_table_ui;
 pub mod comps_ui;
 pub mod control;
@@ -99,6 +100,7 @@ pub mod eyedropper_ui;
 pub mod field_tab;
 pub mod field_wheel;
 pub mod file_dialog;
+pub mod gallery;
 pub mod file_open;
 pub mod file_ui;
 pub mod fill_ui;
@@ -244,6 +246,8 @@ pub mod tool_feedback;
 pub(crate) mod tool_memory;
 mod tool_reset;
 mod tool_shortcuts;
+pub mod timelapse;
+pub mod touch;
 pub mod touch_twins;
 pub mod transform_fx;
 pub mod transform_tex;
@@ -815,6 +819,16 @@ pub struct PhotocraftApp {
     fonts_ready: bool,
     /// Screen rect of the main canvas last frame (for overlays and the navigator).
     pub last_canvas_rect: egui::Rect,
+    /// Touch input for phones and tablets (Android, iOS, touchscreens); see [`touch`].
+    pub touch: touch::Touch,
+    /// Phone / tablet layout state; see [`compact`].
+    pub compact: compact::State,
+    /// Albums, artwork names, timelapse playback; see [`gallery`].
+    pub gallery: gallery::Gallery,
+    /// Records a timelapse frame after edits; see [`timelapse`].
+    pub timelapse: timelapse::Recorder,
+    /// The window width (points) of the last frame.
+    pub last_width: f32,
     /// Window › Arrange: the first document of the shown run of tiles, when there are more
     /// documents than tiles (`canvas::arranged_cells`).
     pub(crate) arrange_start: usize,
@@ -1124,6 +1138,11 @@ impl PhotocraftApp {
             last_window_title: String::new(),
             fonts_ready: false,
             last_canvas_rect: egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(800.0, 600.0)),
+            touch: touch::Touch::new(),
+            compact: compact::State::default(),
+            gallery: gallery::Gallery::default(),
+            timelapse: timelapse::Recorder::new(),
+            last_width: 1600.0,
             arrange_start: 0,
             ppp: 1.0,
             drop_canvas_rect: None,
@@ -2550,6 +2569,17 @@ impl PhotocraftApp {
         // The OS title bar (and the taskbar / Alt-Tab entry) follows the active file; with the
         // system title bar this is where the document name lives, as the in-app title is hidden.
         panels::sync_window_title(self, &ctx);
+        self.last_width = ctx.content_rect().width();
+        let mode = compact::mode_for(self.compact.pref, self.last_width, self.touch.enabled || cfg!(any(target_os = "android", target_os = "ios")));
+        if mode != compact::Mode::Desktop {
+            self.touch_paint_tool();
+            compact::draw(self, ui, mode);
+            self.compact_frame_end(&ctx);
+            self.finish_synthetic_pass();
+            self.automation_input = false;
+            type_tool::sync_ime(self, &ctx);
+            return;
+        }
         let chrome = !self.ui.view.hides_chrome();
         if chrome {
             self.ui.panels.full_screen_chrome = false;
@@ -2727,6 +2757,11 @@ impl eframe::App for PhotocraftApp {
             wheel_nav::fold_legacy_pinch(ctx, raw_input);
         }
         self.inject_synthetic(ctx, raw_input);
+        // Fingers become the pointer events the widgets know (touch/mod.rs); the canvas rect lets
+        // a finger there paint and double-tap to undo instead of scrolling or long-pressing.
+        self.touch.sync_double_tap();
+        let canvas_rect = Some(self.last_canvas_rect);
+        self.touch.process(ctx, raw_input, canvas_rect, &[]);
         // After the control channel's own events (`ui.type`) join the OS's, before any widget.
         widgets::cap_text_events(&mut raw_input.events);
         self.control_click.normalize(&mut raw_input.events, cfg!(target_os = "macos"));
@@ -2746,6 +2781,42 @@ impl eframe::App for PhotocraftApp {
     fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
         self.ui_frame(ui, frame);
         self.finish_type_reset_pass(ui.ctx());
+    }
+}
+
+impl PhotocraftApp {
+    /// Tell the touch layer whether a painting tool is active (the first tap of a double tap
+    /// left a dab that its undo takes too).
+    fn touch_paint_tool(&mut self) {
+        self.touch.paint_tool = self.ui.tool.is_brushlike();
+    }
+
+    /// Per-frame upkeep of the touch layer and the timelapse, run once after the UI.
+    pub fn compact_frame_end(&mut self, ctx: &egui::Context) {
+        self.touch.apply_style(ctx);
+        self.touch.show_bar(ctx);
+        self.touch.filter_ime(ctx, None);
+        for a in self.touch.take_actions() {
+            match a {
+                touch::Action::Undo => {
+                    let _ = self.run("edit.undo", Value::Null);
+                }
+                touch::Action::Redo => {
+                    let _ = self.run("edit.redo", Value::Null);
+                }
+                touch::Action::DoubleTapUndo => {
+                    // The first tap painted a dab: take it too, so the visible effect is one undo.
+                    let steps = if self.touch.paint_tool { 2 } else { 1 };
+                    for _ in 0..steps {
+                        let _ = self.run("edit.undo", Value::Null);
+                    }
+                }
+            }
+        }
+        let rec = std::mem::take(&mut self.timelapse);
+        let mut rec = rec;
+        rec.tick(self, ctx);
+        self.timelapse = rec;
     }
 }
 
