@@ -1,0 +1,99 @@
+56:error[E0063]: missing field `source` in initializer of `egui::Event`
+57-   --> crates/ui-egui/src/touch/mod.rs:251:27
+58-    |
+59-251 |                 self.push(Event::MouseWheel {
+60-    |                           ^^^^^^^^^^^^^^^^^ missing `source`
+61-
+62-warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead
+63-   --> crates/ui-egui/src/touch/mod.rs:323:50
+64-    |
+65-323 |         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
+66-    |                                                  ^^^
+67-    |
+68-    = note: `#[warn(deprecated)]` on by default
+69-
+70-For more information about this error, try `rustc --explain E0063`.
+--
+72:error: could not compile `photocraft-ui-egui` (lib) due to 1 previous error; 1 warning emitted
+73-warning: build failed, waiting for other jobs to finish...
+74-note: If the build failed due to a missing target, you can run this command:
+75-note: 
+76-note:     rustup target install aarch64-linux-android
+
+==== TAIL ====
+patching file src/platform_impl/android/mod.rs
+winit 0.30.13 (storytold fork a517b3846ee8457d84ee4975110bfda6797c44dc) patched in /home/runner/work/photocreate/photocreate/android/vendor/winit
+warning: Environment variable `ANDROID_NDK_HOME = "/usr/local/lib/android/sdk/ndk/26.3.11579264"` doesn't match `ANDROID_NDK_ROOT = "/usr/local/lib/android/sdk/ndk/27.3.13750724"`
+    Building arm64-v8a (aarch64-linux-android)
+    Updating crates.io index
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+     Locking 15 packages to latest Rust 1.95 compatible versions
+      Adding android_log-sys v0.3.2
+      Adding android_logger v0.14.1 (available: v0.15.1)
+      Adding cesu8 v1.1.0
+      Adding env_filter v0.1.4
+      Adding jni v0.21.1 (available: v0.22.4)
+      Adding windows-sys v0.45.0
+      Adding windows-targets v0.42.2
+      Adding windows_aarch64_gnullvm v0.42.2
+      Adding windows_aarch64_msvc v0.42.2
+      Adding windows_i686_gnu v0.42.2
+      Adding windows_i686_msvc v0.42.2
+      Adding windows_x86_64_gnu v0.42.2
+      Adding windows_x86_64_gnullvm v0.42.2
+      Adding windows_x86_64_msvc v0.42.2
+      Adding winit v0.30.13 (/home/runner/work/photocreate/photocreate/android/vendor/winit)
+   Compiling photocraft-cms v0.16.0 (/home/runner/work/photocreate/photocreate/crates/cms)
+   Compiling photocraft-geom v0.16.0 (/home/runner/work/photocreate/photocreate/crates/geom)
+   Compiling winit v0.30.13 (/home/runner/work/photocreate/photocreate/android/vendor/winit)
+   Compiling photocraft-text v0.16.0 (/home/runner/work/photocreate/photocreate/crates/text)
+   Compiling photocraft-codecs v0.16.0 (/home/runner/work/photocreate/photocreate/crates/codecs)
+   Compiling photocraft-color v0.16.0 (/home/runner/work/photocreate/photocreate/crates/color)
+   Compiling photocraft-raster v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raster)
+   Compiling photocraft-doc v0.16.0 (/home/runner/work/photocreate/photocreate/crates/doc)
+   Compiling photocraft-algo v0.16.0 (/home/runner/work/photocreate/photocreate/crates/algo)
+   Compiling photocraft-psd v0.16.0 (/home/runner/work/photocreate/photocreate/crates/psd)
+   Compiling photocraft-vector v0.16.0 (/home/runner/work/photocreate/photocreate/crates/vector)
+   Compiling photocraft-compose v0.16.0 (/home/runner/work/photocreate/photocreate/crates/compose)
+   Compiling photocraft-format v0.16.0 (/home/runner/work/photocreate/photocreate/crates/format)
+   Compiling photocraft-raw v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raw)
+   Compiling photocraft-paint v0.16.0 (/home/runner/work/photocreate/photocreate/crates/paint)
+   Compiling accesskit_winit v0.34.1
+   Compiling photocraft-affinity v0.16.0 (/home/runner/work/photocreate/photocreate/crates/affinity)
+   Compiling photocraft-ui-egui v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ui-egui)
+   Compiling photocraft-io v0.16.0 (/home/runner/work/photocreate/photocreate/crates/io)
+   Compiling egui-winit v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling photocraft-plugins v0.16.0 (/home/runner/work/photocreate/photocreate/crates/plugins)
+   Compiling egui-wgpu v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling photocraft-ops v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ops)
+   Compiling photocraft-ipp v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ipp)
+   Compiling photocraft-engine v0.16.0 (/home/runner/work/photocreate/photocreate/crates/engine)
+   Compiling eframe v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling photocraft-gpu v0.16.0 (/home/runner/work/photocreate/photocreate/crates/gpu)
+error[E0063]: missing field `source` in initializer of `egui::Event`
+   --> crates/ui-egui/src/touch/mod.rs:251:27
+    |
+251 |                 self.push(Event::MouseWheel {
+    |                           ^^^^^^^^^^^^^^^^^ missing `source`
+
+warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead
+   --> crates/ui-egui/src/touch/mod.rs:323:50
+    |
+323 |         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
+    |                                                  ^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+For more information about this error, try `rustc --explain E0063`.
+warning: `photocraft-ui-egui` (lib) generated 1 warning
+error: could not compile `photocraft-ui-egui` (lib) due to 1 previous error; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+note: If the build failed due to a missing target, you can run this command:
+note: 
+note:     rustup target install aarch64-linux-android
