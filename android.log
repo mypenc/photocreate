@@ -1,62 +1,110 @@
+49:error[E0599]: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`
+50-   --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/ime_reset.rs:131:26
+51-    |
+52-131 |         let WindowEvent::ImeResetCompleted { request_id } = event else {
+53-    |                          ^^^^^^^^^^^^^^^^^ variant not found in `winit::event::WindowEvent`
+54-
+55:error[E0599]: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`
+56-    --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:2215:26
+57-     |
+58-2215 |             WindowEvent::ImeResetCompleted { .. } => {
+59-     |                          ^^^^^^^^^^^^^^^^^ variant not found in `winit::event::WindowEvent`
+60-
+61:error[E0599]: no method named `reset_ime_with_request` found for reference `&winit::window::Window` in the current scope
+62-    --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:3464:24
+63-     |
+64-3464 |                 window.reset_ime_with_request(request.as_u64());
+65-     |                        ^^^^^^^^^^^^^^^^^^^^^^ method not found in `&winit::window::Window`
+66-
+67:error[E0599]: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`
+68-    --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:5114:22
+69-     |
+70-5114 |         WindowEvent::ImeResetCompleted { .. } => "WindowEvent::ImeResetCompleted",
+71-     |                      ^^^^^^^^^^^^^^^^^ variant not found in `winit::event::WindowEvent`
+72-
+73-For more information about this error, try `rustc --explain E0599`.
+74:error: could not compile `egui-winit` (lib) due to 4 previous errors
+75-warning: build failed, waiting for other jobs to finish...
+76-note: If the build failed due to a missing target, you can run this command:
+77-note: 
+78-note:     rustup target install aarch64-linux-android
 
 ==== TAIL ====
-> Task :app:packageReleaseResources
-> Task :app:mergeReleaseResources
-> Task :app:createReleaseCompatibleScreenManifests
-> Task :app:extractDeepLinksRelease
-> Task :app:parseReleaseLocalResources
-> Task :app:processReleaseMainManifest
-> Task :app:processReleaseManifest
-> Task :app:processReleaseManifestForPackage
-> Task :app:javaPreCompileRelease
-> Task :app:extractProguardFiles
-> Task :app:mergeReleaseJniLibFolders
-> Task :app:mergeReleaseNativeLibs NO-SOURCE
-> Task :app:stripReleaseDebugSymbols NO-SOURCE
-> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
-> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
-> Task :app:processReleaseResources
-> Task :app:checkReleaseDuplicateClasses
-> Task :app:desugarReleaseFileDependencies
-> Task :app:mergeReleaseStartupProfile
-> Task :app:compileReleaseKotlin
-> Task :app:compileReleaseJavaWithJavac NO-SOURCE
-> Task :app:generateReleaseLintVitalReportModel
-> Task :app:mergeExtDexRelease
-> Task :app:dexBuilderRelease
-> Task :app:mergeReleaseArtProfile
-> Task :app:mergeReleaseGlobalSynthetics
-> Task :app:mergeReleaseShaders
-> Task :app:compileReleaseShaders NO-SOURCE
-> Task :app:generateReleaseAssets UP-TO-DATE
-> Task :app:mergeReleaseAssets
-> Task :app:compressReleaseAssets
-> Task :app:extractReleaseVersionControlInfo
-> Task :app:processReleaseJavaRes
-> Task :app:optimizeReleaseResources
-> Task :app:collectReleaseDependencies
-> Task :app:sdkReleaseDependencyData
-> Task :app:writeReleaseAppMetadata
-> Task :app:writeReleaseSigningConfigVersions
-> Task :app:mergeReleaseJavaResource
-> Task :app:mergeDexRelease
-> Task :app:compileReleaseArtProfile
-> Task :app:packageRelease
-> Task :app:createReleaseApkListingFileRedirect
-> Task :app:lintVitalAnalyzeRelease
-> Task :app:lintVitalReportRelease
-> Task :app:lintVitalRelease
-> Task :app:assembleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793014970375.json
+patching file src/platform_impl/android/mod.rs
+winit 0.30.13 patched in /home/runner/work/photocreate/photocreate/android/vendor/winit
+warning: Environment variable `ANDROID_NDK_HOME = "/usr/local/lib/android/sdk/ndk/26.3.11579264"` doesn't match `ANDROID_NDK_ROOT = "/usr/local/lib/android/sdk/ndk/27.3.13750724"`
+    Building arm64-v8a (aarch64-linux-android)
+    Updating crates.io index
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+     Locking 15 packages to latest Rust 1.95 compatible versions
+      Adding android_log-sys v0.3.2
+      Adding android_logger v0.14.1 (available: v0.15.1)
+      Adding cesu8 v1.1.0
+      Adding env_filter v0.1.4
+      Adding jni v0.21.1 (available: v0.22.4)
+      Adding windows-sys v0.45.0
+      Adding windows-targets v0.42.2
+      Adding windows_aarch64_gnullvm v0.42.2
+      Adding windows_aarch64_msvc v0.42.2
+      Adding windows_i686_gnu v0.42.2
+      Adding windows_i686_msvc v0.42.2
+      Adding windows_x86_64_gnu v0.42.2
+      Adding windows_x86_64_gnullvm v0.42.2
+      Adding windows_x86_64_msvc v0.42.2
+      Adding winit v0.30.13 (/home/runner/work/photocreate/photocreate/android/vendor/winit)
+   Compiling photocraft-cms v0.16.0 (/home/runner/work/photocreate/photocreate/crates/cms)
+   Compiling photocraft-geom v0.16.0 (/home/runner/work/photocreate/photocreate/crates/geom)
+   Compiling winit v0.30.13 (/home/runner/work/photocreate/photocreate/android/vendor/winit)
+   Compiling photocraft-text v0.16.0 (/home/runner/work/photocreate/photocreate/crates/text)
+   Compiling photocraft-codecs v0.16.0 (/home/runner/work/photocreate/photocreate/crates/codecs)
+   Compiling photocraft-color v0.16.0 (/home/runner/work/photocreate/photocreate/crates/color)
+   Compiling photocraft-raster v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raster)
+   Compiling photocraft-doc v0.16.0 (/home/runner/work/photocreate/photocreate/crates/doc)
+   Compiling photocraft-algo v0.16.0 (/home/runner/work/photocreate/photocreate/crates/algo)
+   Compiling photocraft-psd v0.16.0 (/home/runner/work/photocreate/photocreate/crates/psd)
+   Compiling photocraft-vector v0.16.0 (/home/runner/work/photocreate/photocreate/crates/vector)
+   Compiling photocraft-compose v0.16.0 (/home/runner/work/photocreate/photocreate/crates/compose)
+   Compiling photocraft-format v0.16.0 (/home/runner/work/photocreate/photocreate/crates/format)
+   Compiling photocraft-raw v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raw)
+   Compiling photocraft-paint v0.16.0 (/home/runner/work/photocreate/photocreate/crates/paint)
+   Compiling accesskit_winit v0.34.1
+   Compiling photocraft-affinity v0.16.0 (/home/runner/work/photocreate/photocreate/crates/affinity)
+   Compiling photocraft-ui-egui v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ui-egui)
+   Compiling photocraft-io v0.16.0 (/home/runner/work/photocreate/photocreate/crates/io)
+   Compiling egui-winit v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+error[E0599]: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`
+   --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/ime_reset.rs:131:26
+    |
+131 |         let WindowEvent::ImeResetCompleted { request_id } = event else {
+    |                          ^^^^^^^^^^^^^^^^^ variant not found in `winit::event::WindowEvent`
 
-[Incubating] Problems report is available at: file:///home/runner/work/photocreate/photocreate/android/build/reports/problems/problems-report.html
+error[E0599]: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`
+    --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:2215:26
+     |
+2215 |             WindowEvent::ImeResetCompleted { .. } => {
+     |                          ^^^^^^^^^^^^^^^^^ variant not found in `winit::event::WindowEvent`
 
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+error[E0599]: no method named `reset_ime_with_request` found for reference `&winit::window::Window` in the current scope
+    --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:3464:24
+     |
+3464 |                 window.reset_ime_with_request(request.as_u64());
+     |                        ^^^^^^^^^^^^^^^^^^^^^^ method not found in `&winit::window::Window`
 
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+error[E0599]: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`
+    --> /home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:5114:22
+     |
+5114 |         WindowEvent::ImeResetCompleted { .. } => "WindowEvent::ImeResetCompleted",
+     |                      ^^^^^^^^^^^^^^^^^ variant not found in `winit::event::WindowEvent`
 
-For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD SUCCESSFUL in 1m 22s
-44 actionable tasks: 44 executed
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `egui-winit` (lib) due to 4 previous errors
+warning: build failed, waiting for other jobs to finish...
+note: If the build failed due to a missing target, you can run this command:
+note: 
+note:     rustup target install aarch64-linux-android
