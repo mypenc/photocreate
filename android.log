@@ -1,99 +1,137 @@
-56:error[E0063]: missing field `source` in initializer of `egui::Event`
-57-   --> crates/ui-egui/src/touch/mod.rs:251:27
-58-    |
-59-251 |                 self.push(Event::MouseWheel {
-60-    |                           ^^^^^^^^^^^^^^^^^ missing `source`
-61-
-62-warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead
-63-   --> crates/ui-egui/src/touch/mod.rs:323:50
-64-    |
-65-323 |         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
-66-    |                                                  ^^^
-67-    |
-68-    = note: `#[warn(deprecated)]` on by default
-69-
-70-For more information about this error, try `rustc --explain E0063`.
---
-72:error: could not compile `photocraft-ui-egui` (lib) due to 1 previous error; 1 warning emitted
-73-warning: build failed, waiting for other jobs to finish...
-74-note: If the build failed due to a missing target, you can run this command:
-75-note: 
-76-note:     rustup target install aarch64-linux-android
+78:warning: unused import: `Instant`
+79-  --> apps/photocreate-android/src/lib.rs:32:27
+80-   |
+81-32 | use std::time::{Duration, Instant};
+82-   |                           ^^^^^^^
+83-   |
+84-   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+85-
+86-warning: constant `PREFS_EVERY` is never used
+87-  --> apps/photocreate-android/src/lib.rs:44:7
+88-   |
+89-44 | const PREFS_EVERY: Duration = Duration::from_secs(3);
+90-   |       ^^^^^^^^^^^
+91-   |
+92-   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
 
 ==== TAIL ====
-patching file src/platform_impl/android/mod.rs
-winit 0.30.13 (storytold fork a517b3846ee8457d84ee4975110bfda6797c44dc) patched in /home/runner/work/photocreate/photocreate/android/vendor/winit
-warning: Environment variable `ANDROID_NDK_HOME = "/usr/local/lib/android/sdk/ndk/26.3.11579264"` doesn't match `ANDROID_NDK_ROOT = "/usr/local/lib/android/sdk/ndk/27.3.13750724"`
-    Building arm64-v8a (aarch64-linux-android)
-    Updating crates.io index
-warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
-warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
-warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
-help: Check that the patched package version and available features are compatible
-      with the dependency requirements. If the patch has a different version from
-      what is locked in the Cargo.lock file, run `cargo update` to use the new
-      version. This may also occur with an optional dependency that is not enabled.
-     Locking 15 packages to latest Rust 1.95 compatible versions
-      Adding android_log-sys v0.3.2
-      Adding android_logger v0.14.1 (available: v0.15.1)
-      Adding cesu8 v1.1.0
-      Adding env_filter v0.1.4
-      Adding jni v0.21.1 (available: v0.22.4)
-      Adding windows-sys v0.45.0
-      Adding windows-targets v0.42.2
-      Adding windows_aarch64_gnullvm v0.42.2
-      Adding windows_aarch64_msvc v0.42.2
-      Adding windows_i686_gnu v0.42.2
-      Adding windows_i686_msvc v0.42.2
-      Adding windows_x86_64_gnu v0.42.2
-      Adding windows_x86_64_gnullvm v0.42.2
-      Adding windows_x86_64_msvc v0.42.2
-      Adding winit v0.30.13 (/home/runner/work/photocreate/photocreate/android/vendor/winit)
-   Compiling photocraft-cms v0.16.0 (/home/runner/work/photocreate/photocreate/crates/cms)
-   Compiling photocraft-geom v0.16.0 (/home/runner/work/photocreate/photocreate/crates/geom)
-   Compiling winit v0.30.13 (/home/runner/work/photocreate/photocreate/android/vendor/winit)
-   Compiling photocraft-text v0.16.0 (/home/runner/work/photocreate/photocreate/crates/text)
-   Compiling photocraft-codecs v0.16.0 (/home/runner/work/photocreate/photocreate/crates/codecs)
-   Compiling photocraft-color v0.16.0 (/home/runner/work/photocreate/photocreate/crates/color)
-   Compiling photocraft-raster v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raster)
-   Compiling photocraft-doc v0.16.0 (/home/runner/work/photocreate/photocreate/crates/doc)
-   Compiling photocraft-algo v0.16.0 (/home/runner/work/photocreate/photocreate/crates/algo)
-   Compiling photocraft-psd v0.16.0 (/home/runner/work/photocreate/photocreate/crates/psd)
-   Compiling photocraft-vector v0.16.0 (/home/runner/work/photocreate/photocreate/crates/vector)
-   Compiling photocraft-compose v0.16.0 (/home/runner/work/photocreate/photocreate/crates/compose)
-   Compiling photocraft-format v0.16.0 (/home/runner/work/photocreate/photocreate/crates/format)
-   Compiling photocraft-raw v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raw)
-   Compiling photocraft-paint v0.16.0 (/home/runner/work/photocreate/photocreate/crates/paint)
-   Compiling accesskit_winit v0.34.1
-   Compiling photocraft-affinity v0.16.0 (/home/runner/work/photocreate/photocreate/crates/affinity)
-   Compiling photocraft-ui-egui v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ui-egui)
-   Compiling photocraft-io v0.16.0 (/home/runner/work/photocreate/photocreate/crates/io)
-   Compiling egui-winit v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
-   Compiling photocraft-plugins v0.16.0 (/home/runner/work/photocreate/photocreate/crates/plugins)
-   Compiling egui-wgpu v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
-   Compiling photocraft-ops v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ops)
-   Compiling photocraft-ipp v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ipp)
-   Compiling photocraft-engine v0.16.0 (/home/runner/work/photocreate/photocreate/crates/engine)
-   Compiling eframe v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
-   Compiling photocraft-gpu v0.16.0 (/home/runner/work/photocreate/photocreate/crates/gpu)
-error[E0063]: missing field `source` in initializer of `egui::Event`
-   --> crates/ui-egui/src/touch/mod.rs:251:27
     |
-251 |                 self.push(Event::MouseWheel {
-    |                           ^^^^^^^^^^^^^^^^^ missing `source`
-
-warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead
-   --> crates/ui-egui/src/touch/mod.rs:323:50
-    |
-323 |         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
+324 |         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
     |                                                  ^^^
     |
     = note: `#[warn(deprecated)]` on by default
 
-For more information about this error, try `rustc --explain E0063`.
-warning: `photocraft-ui-egui` (lib) generated 1 warning
-error: could not compile `photocraft-ui-egui` (lib) due to 1 previous error; 1 warning emitted
-warning: build failed, waiting for other jobs to finish...
-note: If the build failed due to a missing target, you can run this command:
-note: 
-note:     rustup target install aarch64-linux-android
+warning: variant `Scrolling` is never constructed
+   --> crates/ui-egui/src/touch/gesture.rs:115:5
+    |
+104 | enum Mode {
+    |      ---- variant in this enum
+...
+115 |     Scrolling {
+    |     ^^^^^^^^^
+    |
+    = note: `Mode` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `photocraft-ui-egui` (lib) generated 2 warnings
+   Compiling photocreate-android v0.16.0 (/home/runner/work/photocreate/photocreate/apps/photocreate-android)
+warning: unused import: `Instant`
+  --> apps/photocreate-android/src/lib.rs:32:27
+   |
+32 | use std::time::{Duration, Instant};
+   |                           ^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `PREFS_EVERY` is never used
+  --> apps/photocreate-android/src/lib.rs:44:7
+   |
+44 | const PREFS_EVERY: Duration = Duration::from_secs(3);
+   |       ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `config_dir` is never used
+   --> apps/photocreate-android/src/lib.rs:130:4
+    |
+130 | fn config_dir() -> Option<PathBuf> {
+    |    ^^^^^^^^^^
+
+warning: `photocreate-android` (lib) generated 3 warnings (run `cargo fix --lib -p photocreate-android` to apply 1 suggestion)
+    Finished `release` profile [optimized] target(s) in 6m 22s
+     Copying libraries to /home/runner/work/photocreate/photocreate/android/app/src/main/jniLibs
+Starting a Gradle Daemon (subsequent builds will be faster)
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:mergeReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:parseReleaseLocalResources
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:javaPreCompileRelease
+> Task :app:extractProguardFiles
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:processReleaseManifestForPackage
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:mergeReleaseNativeLibs
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
+
+> Task :app:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libphotocreate_android.so.
+
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:mergeReleaseArtProfile
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :app:processReleaseResources
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:collectReleaseDependencies
+> Task :app:optimizeReleaseResources
+> Task :app:sdkReleaseDependencyData
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :app:mergeExtDexRelease
+> Task :app:compileReleaseKotlin
+> Task :app:compileReleaseJavaWithJavac NO-SOURCE
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:dexBuilderRelease
+> Task :app:mergeReleaseGlobalSynthetics
+> Task :app:processReleaseJavaRes
+> Task :app:mergeReleaseJavaResource
+> Task :app:mergeDexRelease
+> Task :app:compileReleaseArtProfile
+
+> Task :app:packageRelease
+There are no .so files available to package in the APK for x86_64.
+
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:assembleRelease
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793017371529.json
+
+[Incubating] Problems report is available at: file:///home/runner/work/photocreate/photocreate/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 48s
+47 actionable tasks: 47 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
