@@ -1,0 +1,62 @@
+
+==== TAIL ====
+[1m[92m   Compiling[0m fastrand v2.5.0
+[1m[92m   Compiling[0m tempfile v3.27.0
+[1m[92m   Compiling[0m type-map v0.5.1
+[1m[92m   Compiling[0m toml v1.1.6+spec-1.1.0
+[1m[92m   Compiling[0m regex-automata v0.4.18
+[1m[92m   Compiling[0m rustls-platform-verifier v0.7.1
+[1m[92m   Compiling[0m ureq-proto v0.6.5
+[1m[92m   Compiling[0m digest v0.10.7
+[1m[92m   Compiling[0m photocraft-raw v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raw)
+[1m[92m   Compiling[0m photocraft-format v0.16.0 (/home/runner/work/photocreate/photocreate/crates/format)
+[1m[92m   Compiling[0m photocraft-affinity v0.16.0 (/home/runner/work/photocreate/photocreate/crates/affinity)
+[1m[92m   Compiling[0m accesskit_winit v0.34.1
+[1m[92m   Compiling[0m photocraft-paint v0.16.0 (/home/runner/work/photocreate/photocreate/crates/paint)
+[1m[92m   Compiling[0m enum-map-derive v1.0.1
+[1m[92m   Compiling[0m roxmltree v0.21.1
+[1m[92m   Compiling[0m chrono v0.4.45
+[1m[92m   Compiling[0m filetime v0.2.29
+[1m[92m   Compiling[0m cpufeatures v0.2.17
+[1m[92m   Compiling[0m utf8-zero v0.8.1
+[1m[92m   Compiling[0m percent-encoding v2.3.2
+[1m[92m   Compiling[0m craft-docpath v0.1.0 (https://github.com/storytold/craft-libs?rev=495e5971bc024aa96e6ed318cb6e7cd3a0103184#495e5971)
+[1m[92m   Compiling[0m craft-winprint-gdi v0.1.0 (https://github.com/storytold/winprint.rs?rev=417ac3c4d14d3da5485a99c7d5ce8f05664ec312#417ac3c4)
+[1m[92m   Compiling[0m craft-print v0.1.0 (https://github.com/storytold/craft-libs?rev=495e5971bc024aa96e6ed318cb6e7cd3a0103184#495e5971)
+[1m[92m   Compiling[0m photocraft-io v0.16.0 (/home/runner/work/photocreate/photocreate/crates/io)
+[1m[92m   Compiling[0m ureq v3.5.0
+[1m[92m   Compiling[0m photocraft-ui-egui v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ui-egui)
+[1m[92m   Compiling[0m sha2 v0.10.9
+[1m[92m   Compiling[0m tar v0.4.46
+[1m[92m   Compiling[0m enum-map v3.1.0
+[1m[92m   Compiling[0m egui-winit v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+[1m[91merror[E0599][0m[1m: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`[0m
+   [1m[94m--> [0m/home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/ime_reset.rs:131:26
+    [1m[94m|[0m
+[1m[94m131[0m [1m[94m|[0m         let WindowEvent::ImeResetCompleted { request_id } = event else {
+    [1m[94m|[0m                          [1m[91m^^^^^^^^^^^^^^^^^[0m [1m[91mvariant not found in `winit::event::WindowEvent`[0m
+
+[1m[91merror[E0599][0m[1m: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`[0m
+    [1m[94m--> [0m/home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:2215:26
+     [1m[94m|[0m
+[1m[94m2215[0m [1m[94m|[0m             WindowEvent::ImeResetCompleted { .. } => {
+     [1m[94m|[0m                          [1m[91m^^^^^^^^^^^^^^^^^[0m [1m[91mvariant not found in `winit::event::WindowEvent`[0m
+
+[1m[91merror[E0599][0m[1m: no method named `reset_ime_with_request` found for reference `&winit::window::Window` in the current scope[0m
+    [1m[94m--> [0m/home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:3464:24
+     [1m[94m|[0m
+[1m[94m3464[0m [1m[94m|[0m                 window.reset_ime_with_request(request.as_u64());
+     [1m[94m|[0m                        [1m[91m^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91mmethod not found in `&winit::window::Window`[0m
+
+[1m[91merror[E0599][0m[1m: no variant named `ImeResetCompleted` found for enum `winit::event::WindowEvent`[0m
+    [1m[94m--> [0m/home/runner/.cargo/git/checkouts/egui-057e9a0485eda407/6d518fc/crates/egui-winit/src/lib.rs:5114:22
+     [1m[94m|[0m
+[1m[94m5114[0m [1m[94m|[0m         WindowEvent::ImeResetCompleted { .. } => "WindowEvent::ImeResetCompleted",
+     [1m[94m|[0m                      [1m[91m^^^^^^^^^^^^^^^^^[0m [1m[91mvariant not found in `winit::event::WindowEvent`[0m
+
+[1mFor more information about this error, try `rustc --explain E0599`.[0m
+[1m[91merror[0m: could not compile `egui-winit` (lib) due to 4 previous errors
+[1m[33mwarning[0m: build failed, waiting for other jobs to finish...
+note: If the build failed due to a missing target, you can run this command:
+note: 
+note:     rustup target install aarch64-linux-android
