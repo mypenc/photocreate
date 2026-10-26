@@ -1,21 +1,24 @@
 [package]
-name = "cadcraft-android"
-description = "CADCraft for Android: the same engine and egui UI, native (GameActivity app, not a web view)"
+name = "photocreate-android"
+description = "PhotoCreate for Android: the same engine and egui UI, native (GameActivity app, not a web view)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 publish = false
 
 [lib]
-name = "cadcraft_android"
+name = "photocreate_android"
 crate-type = ["cdylib"]
 
 # Everything is Android-only. On other targets this crate is an empty library, so
 # `cargo build --workspace` and `cargo test --workspace` keep working on desktop CI.
 [target.'cfg(target_os = "android")'.dependencies]
-cadcraft-engine = { workspace = true }
-cadcraft-io = { workspace = true }
-cadcraft-ui-egui = { workspace = true }
+photocraft-engine = { workspace = true }
+photocraft-io = { workspace = true }
+photocraft-ui-egui = { workspace = true }
+photocraft-doc = { workspace = true }
+photocraft-codecs = { workspace = true }
+photocraft-format = { workspace = true }
 egui = { workspace = true }
 # GameActivity (not NativeActivity): it brings the input-method plumbing the soft keyboard needs.
 eframe = { workspace = true, features = ["default_fonts", "wgpu", "android-game-activity"] }
@@ -23,6 +26,7 @@ android-activity = { version = "0.6", features = ["game-activity"] }
 jni = "0.21"
 serde_json = { workspace = true }
 log = { workspace = true }
+android_logger = "0.14"
 
 # JNI and the exported entry points need `unsafe`; the workspace forbids it
 # (`[workspace.lints.rust] unsafe_code = "forbid"`), so this crate opts out of that table.

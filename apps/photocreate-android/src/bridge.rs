@@ -1,7 +1,7 @@
 //! JNI bridge to the Kotlin half (`android/app/src/main/kotlin/…`).
 //!
 //! Rust → Kotlin: methods on `MainActivity` (`openDialog`, `saveDialog`, `showLog`, `haptic`,
-//! clipboard, `localeTag`). Kotlin → Rust: the `Java_ai_storyteller_cadcraft_NativeBridge_*` functions below.
+//! clipboard, `localeTag`). Kotlin → Rust: the `Java_ai_storyteller_photocreate_NativeBridge_*` functions below.
 
 use std::sync::atomic::{AtomicBool, AtomicI64, Ordering};
 use std::sync::{Mutex, OnceLock, PoisonError};
@@ -11,7 +11,6 @@ use android_activity::AndroidApp;
 use jni::objects::{JClass, JObject, JString, JValue};
 use jni::sys::jlong;
 use jni::{JNIEnv, JavaVM};
-use cadcraft_ui_egui::Invocation;
 
 static CTX: OnceLock<egui::Context> = OnceLock::new();
 static NEXT_ID: AtomicI64 = AtomicI64::new(1);
@@ -29,7 +28,7 @@ pub enum PickKind {
 struct Waiting {
     id: i64,
     kind: PickKind,
-    asked_by: Option<Invocation>,
+    asked_by: Option<()>,
 }
 
 /// A finished pick waiting for the command that asked to run again and take it.
@@ -42,7 +41,7 @@ struct Answer {
 static WAITING: Mutex<Option<Waiting>> = Mutex::new(None);
 static READY: Mutex<Option<Answer>> = Mutex::new(None);
 /// The command to run again now that its file is chosen.
-static REPLAY: Mutex<Option<Invocation>> = Mutex::new(None);
+static REPLAY: Mutex<Option<()>> = Mutex::new(None);
 /// The picker answered for something that was not a command (a dialog button): the user taps again.
 static TAP_AGAIN: AtomicBool = AtomicBool::new(false);
 
@@ -73,7 +72,7 @@ pub fn pick(app: &AndroidApp, kind: PickKind, name: &str) -> Option<String> {
         return None; // a picker is already open
     }
     let id = NEXT_ID.fetch_add(1, Ordering::Relaxed);
-    *lock(&WAITING) = Some(Waiting { id, kind, asked_by: cadcraft_ui_egui::current_invocation() });
+    *lock(&WAITING) = Some(Waiting { id, kind, asked_by: None });
     let started = with_activity(app, |env, activity| {
         let (method, arg) = match kind {
             PickKind::Open => ("openDialog", "document"),
@@ -90,7 +89,7 @@ pub fn pick(app: &AndroidApp, kind: PickKind, name: &str) -> Option<String> {
 }
 
 /// The command that asked for a file which is now chosen: run it again.
-pub fn take_replay() -> Option<Invocation> {
+pub fn take_replay() -> Option<()> {
     lock(&REPLAY).take()
 }
 
@@ -109,7 +108,7 @@ fn wake() {
     }
 }
 
-/// Documents other apps asked CADCraft to open since the last call.
+/// Documents other apps asked PhotoCreate to open since the last call.
 pub fn take_opened() -> Vec<String> {
     std::mem::take(&mut *OPENED.lock().unwrap_or_else(PoisonError::into_inner))
 }
@@ -177,7 +176,7 @@ pub fn set_loading_progress(app: &AndroidApp, percent: i32) {
     with_activity(app, |env, activity| env.call_method(activity, "setLoadingProgress", "(I)V", &[JValue::Int(percent)]).map(|_| ()));
 }
 
-/// Remove the startup loading bar once CADCraft's first frame is on screen.
+/// Remove the startup loading bar once PhotoCreate's first frame is on screen.
 pub fn hide_loading(app: &AndroidApp) {
     with_activity(app, |env, activity| env.call_method(activity, "hideLoading", "()V", &[]).map(|_| ()));
 }
@@ -213,7 +212,7 @@ fn read_string(env: &mut JNIEnv, s: &JString) -> Option<String> {
 
 /// `NativeBridge.onDialogAnswer(id: Long, path: String?)`, from a Kotlin worker or the UI thread.
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_ai_storyteller_cadcraft_NativeBridge_onDialogAnswer(mut env: JNIEnv, _class: JClass, id: jlong, path: JString) {
+pub extern "system" fn Java_ai_storyteller_photocreate_NativeBridge_onDialogAnswer(mut env: JNIEnv, _class: JClass, id: jlong, path: JString) {
     let answer = read_string(&mut env, &path);
     let waiting = {
         let mut w = lock(&WAITING);
@@ -231,7 +230,7 @@ pub extern "system" fn Java_ai_storyteller_cadcraft_NativeBridge_onDialogAnswer(
 
 /// `NativeBridge.onOpenIntent(path: String)`: a document opened from another app.
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_ai_storyteller_cadcraft_NativeBridge_onOpenIntent(mut env: JNIEnv, _class: JClass, path: JString) {
+pub extern "system" fn Java_ai_storyteller_photocreate_NativeBridge_onOpenIntent(mut env: JNIEnv, _class: JClass, path: JString) {
     if let Some(p) = read_string(&mut env, &path) {
         OPENED.lock().unwrap_or_else(PoisonError::into_inner).push(p);
         wake();

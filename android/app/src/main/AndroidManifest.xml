@@ -12,9 +12,9 @@
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="CADCraft"
+        android:label="PhotoCreate"
         android:largeHeap="true"
-        android:theme="@style/Theme.CADCraft">
+        android:theme="@style/Theme.PhotoCreate">
 
         <!-- Restarts the app in a fresh process (crash dialog: Try loading again). -->
         <activity
@@ -31,14 +31,14 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden">
 
-            <meta-data android:name="android.app.lib_name" android:value="cadcraft_android" />
+            <meta-data android:name="android.app.lib_name" android:value="photocreate_android" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- "Open with CADCraft" on a DWG, DXF or DWT drawing. -->
+            <!-- "Open with PhotoCreate" on a DWG, DXF or DWT drawing. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

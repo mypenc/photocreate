@@ -1,8 +1,8 @@
-package ai.storyteller.cadcraft
+package ai.storyteller.photocreate
 
 /**
- * Kotlin → Rust. The symbols are `Java_ai_storyteller_cadcraft_NativeBridge_*` in
- * `apps/cadcraft-android/src/bridge.rs`; keep the package, object and method names in step.
+ * Kotlin → Rust. The symbols are `Java_ai_storyteller_photocreate_NativeBridge_*` in
+ * `apps/photocreate-android/src/bridge.rs`; keep the package, object and method names in step.
  */
 object NativeBridge {
     /** The answer to a file dialog Rust asked for: a path in the app's folder, or null if cancelled. */

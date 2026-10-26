@@ -1,4 +1,4 @@
-package ai.storyteller.cadcraft
+package ai.storyteller.photocreate
 
 import android.app.Activity
 import android.content.Intent

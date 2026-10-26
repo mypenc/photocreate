@@ -1,4 +1,4 @@
-package ai.storyteller.cadcraft
+package ai.storyteller.photocreate
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -32,7 +32,7 @@ import java.util.concurrent.Executors
 
 /**
  * Hosts the Rust app. Rust calls the `@Suppress("unused")` methods below over JNI (see
- * `apps/cadcraft-android/src/bridge.rs`); results go back through [NativeBridge].
+ * `apps/photocreate-android/src/bridge.rs`); results go back through [NativeBridge].
  *
  * Android gives apps `content://` URIs, but the engine reads and writes plain paths. So:
  *  - **Open / pictures / fonts**: the picked document is copied into `filesDir/imports/…` and its
@@ -47,7 +47,7 @@ class MainActivity : GameActivity() {
     @Volatile private var fullscreen = false
     private var loadingView: View? = null
     private var loadingBar: ProgressBar? = null
-    private val prefs by lazy { getSharedPreferences("cadcraft", MODE_PRIVATE) }
+    private val prefs by lazy { getSharedPreferences("photocreate", MODE_PRIVATE) }
 
     private class Request(val id: Long, val arg: String)
 
@@ -79,7 +79,7 @@ class MainActivity : GameActivity() {
                     uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
                 prefs.edit().putString(PREF_WORKSPACE, uri.toString()).apply()
-            }.onFailure { Log.w("CADCraft", "could not keep access to $uri", it) }
+            }.onFailure { Log.w("PhotoCreate", "could not keep access to $uri", it) }
         }
         val pending = pendingSave
         pendingSave = null
@@ -180,7 +180,7 @@ class MainActivity : GameActivity() {
     @Suppress("unused")
     fun setLoadingProgress(percent: Int) = runOnUiThread { loadingBar?.progress = percent.coerceIn(0, 100) }
 
-    /** Rust: the first CADCraft frame is drawn, so the loading bar goes away. */
+    /** Rust: the first PhotoCreate frame is drawn, so the loading bar goes away. */
     @Suppress("unused")
     fun hideLoading() = runOnUiThread {
         DebugLog.markReady(this)
@@ -189,7 +189,7 @@ class MainActivity : GameActivity() {
         loadingBar = null
     }
 
-    /** A plain classic Android loading bar on the window colour, shown until CADCraft draws. */
+    /** A plain classic Android loading bar on the window colour, shown until PhotoCreate draws. */
     private fun showLoading() {
         val blue = 0xFF33B5E5.toInt() // the classic Holo blue
         val bar = ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal).apply {
@@ -229,7 +229,7 @@ class MainActivity : GameActivity() {
         if (inputMethod.hideSoftInputFromWindow(token, 0)) {
             softKeyboardVisible = false
         } else {
-            Log.w("CADCraft", "Android did not accept the request to hide the soft keyboard")
+            Log.w("PhotoCreate", "Android did not accept the request to hide the soft keyboard")
         }
     }
 
@@ -247,7 +247,7 @@ class MainActivity : GameActivity() {
             window.insetsController?.show(android.view.WindowInsets.Type.ime())
             shown = true
         }
-        if (shown) softKeyboardVisible = true else Log.w("CADCraft", "Android did not accept the request to show the soft keyboard")
+        if (shown) softKeyboardVisible = true else Log.w("PhotoCreate", "Android did not accept the request to show the soft keyboard")
     }
 
     /** The system clipboard's text, for the ribbon's Paste (Ctrl+V uses egui's in-app clipboard). */
@@ -261,7 +261,7 @@ class MainActivity : GameActivity() {
     @Suppress("unused")
     fun setClipboardText(text: String) = runOnUiThread {
         val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.setPrimaryClip(ClipData.newPlainText("CADCraft", text))
+        cm.setPrimaryClip(ClipData.newPlainText("PhotoCreate", text))
     }
 
     // ---- dialogs -----------------------------------------------------------------------
@@ -344,7 +344,7 @@ class MainActivity : GameActivity() {
             if (request.arg == "document") mirrorBack(target, uri)
             target.absolutePath
         } catch (t: Throwable) {
-            Log.w("CADCraft", "could not read $uri", t)
+            Log.w("PhotoCreate", "could not read $uri", t)
             null
         }
         NativeBridge.onDialogAnswer(id, path)
@@ -381,7 +381,7 @@ class MainActivity : GameActivity() {
                 mirrorBack(target, uri)
                 NativeBridge.onOpenIntent(target.absolutePath)
             } catch (t: Throwable) {
-                Log.w("CADCraft", "could not open $uri", t)
+                Log.w("PhotoCreate", "could not open $uri", t)
             }
         }
     }

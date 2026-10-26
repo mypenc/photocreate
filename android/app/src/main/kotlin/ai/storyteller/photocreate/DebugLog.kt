@@ -1,4 +1,4 @@
-package ai.storyteller.cadcraft
+package ai.storyteller.photocreate
 
 import android.app.Activity
 import android.app.ActivityManager
@@ -26,7 +26,7 @@ import kotlin.concurrent.thread
  *
  * Launch state machine (a tiny file in `filesDir`, written before the native code starts):
  *   `starting` -> written in [install]; `ready` -> written by [markReady] when Rust has drawn its
- *   first CADCraft frame. If the next launch finds `starting`, the previous run died (native
+ *   first PhotoCreate frame. If the next launch finds `starting`, the previous run died (native
  *   crash, Java crash, killed by the system) BEFORE the first frame. [install] then shows a
  *   non-dismissable dialog with the crash report and three choices: Try loading again (restarts
  *   the whole process), Copy log, Exit.
@@ -132,7 +132,7 @@ object DebugLog {
     private fun buildReport(activity: Activity): String {
         val crash = crashFile(activity)
         val sb = StringBuilder()
-        sb.append("CADCraft debug report\n")
+        sb.append("PhotoCreate debug report\n")
         sb.append("Device: ${Build.MANUFACTURER} ${Build.MODEL}, Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})\n")
         sb.append("ABIs: ${Build.SUPPORTED_ABIS.joinToString()}\n\n")
         sb.append("--- Previous process exits (system) ---\n").append(exitReasons(activity)).append("\n")
@@ -172,13 +172,13 @@ object DebugLog {
         val builder = AlertDialog.Builder(activity).setView(scroll)
         if (startupFailure) {
             // Not dismissable: the user decides. Buttons that must not close the dialog (Copy) are re-wired below.
-            builder.setTitle("CADCraft closed before it finished loading")
+            builder.setTitle("PhotoCreate closed before it finished loading")
                 .setCancelable(false)
                 .setPositiveButton("Try loading again", null)
                 .setNeutralButton("Copy log", null)
                 .setNegativeButton("Exit", null)
         } else {
-            builder.setTitle("CADCraft log")
+            builder.setTitle("PhotoCreate log")
                 .setPositiveButton("Copy all") { _, _ -> copy(activity, report) }
                 .setNeutralButton("Share") { _, _ -> share(activity, report) }
                 .setNegativeButton("Close", null)
@@ -217,7 +217,7 @@ object DebugLog {
 
     private fun copy(context: Context, text: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("CADCraft log", text))
+        clipboard.setPrimaryClip(ClipData.newPlainText("PhotoCreate log", text))
         Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show()
     }
 

@@ -1,21 +1,24 @@
 [package]
-name = "cadcraft-ios"
-description = "CADCraft for iPhone and iPad: the same engine and egui UI, native (winit + wgpu on Metal)"
+name = "photocraft-ios"
+description = "PhotoCreate for iPhone and iPad: the same engine and egui UI, native (winit + wgpu on Metal)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 publish = false
 
 [[bin]]
-name = "cadcraft-ios"
+name = "photocraft-ios"
 path = "src/main.rs"
 
 # Everything is iOS-only. On other targets this crate is a stub binary, so `cargo build
 # --workspace` and `cargo test --workspace` keep working on desktop CI.
 [target.'cfg(target_os = "ios")'.dependencies]
-cadcraft-engine = { workspace = true }
-cadcraft-io = { workspace = true }
-cadcraft-ui-egui = { workspace = true }
+photocraft-engine = { workspace = true }
+photocraft-io = { workspace = true }
+photocraft-ui-egui = { workspace = true }
+photocraft-doc = { workspace = true }
+photocraft-codecs = { workspace = true }
+photocraft-format = { workspace = true }
 egui = { workspace = true }
 eframe = { workspace = true, features = ["default_fonts", "wgpu"] }
 serde_json = { workspace = true }

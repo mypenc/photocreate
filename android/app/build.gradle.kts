@@ -11,11 +11,11 @@ val workspaceVersion: String =
 // android/scripts/build.sh (git-ignored), so Gradle needs no custom task for it.
 
 android {
-    namespace = "ai.storyteller.cadcraft"
+    namespace = "ai.storyteller.photocreate"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "ai.storyteller.cadcraft"
+        applicationId = "ai.storyteller.photocreate"
         minSdk = 29 // scoped storage; AAudio and Vulkan are solid from here
         targetSdk = 35
         // CI passes the run number so every build is a valid update over the last one.

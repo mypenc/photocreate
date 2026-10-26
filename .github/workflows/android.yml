@@ -106,13 +106,13 @@ jobs:
             echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
           else
             echo "::warning::No keystore secrets set; signing with a throwaway key. Each build gets a different signature, so uninstall the old app before installing a new build."
-            KS_PASS=android; KS_ALIAS=cadcraft
+            KS_PASS=android; KS_ALIAS=photocreate
             keytool -genkeypair -keystore "$RUNNER_TEMP/release.jks" -alias "$KS_ALIAS" \
               -keyalg RSA -keysize 2048 -validity 10000 \
-              -storepass "$KS_PASS" -keypass "$KS_PASS" -dname "CN=CADCraft"
+              -storepass "$KS_PASS" -keypass "$KS_PASS" -dname "CN=PhotoCreate"
           fi
           "$BT/zipalign" -f -p 4 "$UNSIGNED" "$RUNNER_TEMP/aligned.apk"
-          OUT=android/app/build/outputs/apk/release/cadcraft-arm64-signed.apk
+          OUT=android/app/build/outputs/apk/release/photocreate-arm64-signed.apk
           "$BT/apksigner" sign --ks "$RUNNER_TEMP/release.jks" --ks-key-alias "$KS_ALIAS" \
             --ks-pass "pass:$KS_PASS" --out "$OUT" "$RUNNER_TEMP/aligned.apk"
           "$BT/apksigner" verify --verbose "$OUT"
@@ -123,7 +123,7 @@ jobs:
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cadcraft-android-arm64
+          name: photocreate-android-arm64
           path: ${{ steps.apk.outputs.path }}
 
       - name: Create GitHub release (tag builds only)

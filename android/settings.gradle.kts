@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "CADCraft"
+rootProject.name = "PhotoCreate"
 include(":app")

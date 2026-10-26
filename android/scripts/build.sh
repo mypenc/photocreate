@@ -24,10 +24,10 @@ cd "$root"
 # Launcher icon: copied from the repo icon set (git-ignored copy, no Gradle task needed).
 icon_dir="$here/app/src/main/res/mipmap-xxxhdpi"
 mkdir -p "$icon_dir"
-cp "$root/assets/app-icon/cadcraft-256.png" "$icon_dir/ic_launcher.png"
+cp "$root/assets/app-icon/photocraft-1024.png" "$icon_dir/ic_launcher.png"
 targets=(); for a in "${abis[@]}"; do targets+=(-t "$a"); done
 # The winit patch applies to this build only: desktop builds keep using crates.io's winit.
-cargo ndk --platform 29 "${targets[@]}" -o "$here/app/src/main/jniLibs" build -p cadcraft-android $profile \
+cargo ndk --platform 29 "${targets[@]}" -o "$here/app/src/main/jniLibs" build -p photocreate-android $profile \
   --config "patch.crates-io.winit.path=\"$here/vendor/winit\""
 
 if [ "$apk" = 1 ]; then

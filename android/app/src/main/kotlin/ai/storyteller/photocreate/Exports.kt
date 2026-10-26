@@ -1,4 +1,4 @@
-package ai.storyteller.cadcraft
+package ai.storyteller.photocreate
 
 import android.content.Context
 import android.net.Uri
@@ -31,7 +31,7 @@ class Exports(private val context: Context) {
         val created = System.currentTimeMillis()
     }
 
-    private val thread = HandlerThread("cadcraft-exports").apply { start() }
+    private val thread = HandlerThread("photocreate-exports").apply { start() }
     private val handler = Handler(thread.looper)
     private val main = Handler(Looper.getMainLooper())
     private val entries = mutableListOf<Entry>()
@@ -84,7 +84,7 @@ class Exports(private val context: Context) {
     }
 
     companion object {
-        private const val TAG = "CADCraft"
+        private const val TAG = "PhotoCreate"
         private const val POLL_MS = 1000L
         private const val STABLE_POLLS = 2
         private const val ONE_SHOT_TTL_MS = 6L * 60 * 60 * 1000
