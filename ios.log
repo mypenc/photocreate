@@ -26,10 +26,10 @@
 [1m[92m   Compiling[0m photocraft-cms v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/cms)
 [1m[92m   Compiling[0m photocraft-geom v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/geom)
 [1m[92m   Compiling[0m photocraft-text v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/text)
+[1m[92m   Compiling[0m photocraft-codecs v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/codecs)
 [1m[92m   Compiling[0m photocraft-color v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/color)
 [1m[92m   Compiling[0m photocraft-raster v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/raster)
 [1m[92m   Compiling[0m photocraft-doc v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/doc)
-[1m[92m   Compiling[0m photocraft-codecs v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/codecs)
 [1m[92m   Compiling[0m photocraft-algo v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/algo)
 [1m[92m   Compiling[0m photocraft-vector v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/vector)
 [1m[92m   Compiling[0m photocraft-compose v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/compose)
@@ -53,25 +53,24 @@
     [1m[94m|[0m
     [1m[94m= [0m[1mnote[0m: `#[warn(deprecated)]` on by default
 
-[1m[91merror[E0277][0m[1m: the trait bound `touch::Touch: std::default::Default` is not satisfied[0m
-   [1m[94m--> [0mcrates/ui-egui/src/touch/mod.rs:111:114
-    [1m[94m|[0m
-[1m[94m111[0m [1m[94m|[0m         Self { enabled: android, bar_visible: false, style_dirty: true, bar_scale: 1.0, double_tap_undo: true, ..Default::default() }
-    [1m[94m|[0m                                                                                                                  [1m[91m^^^^^^^^^^^^^^^^^^[0m [1m[91mthe trait `std::default::Default` is not implemented for `touch::Touch`[0m
-    [1m[94m|[0m
-[1m[96mhelp[0m: consider annotating `touch::Touch` with `#[derive(Default)]`
-    [1m[94m|[0m
-[1m[94m 54[0m [92m+ #[derive(Default)][0m
-[1m[94m 55[0m [1m[94m|[0m pub struct Touch {
-    [1m[94m|[0m
-
 [1m[33mwarning[0m[1m: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead[0m
    [1m[94m--> [0mcrates/ui-egui/src/touch/mod.rs:360:50
     [1m[94m|[0m
 [1m[94m360[0m [1m[94m|[0m         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
     [1m[94m|[0m                                                  [1m[33m^^^[0m
 
-[1mFor more information about this error, try `rustc --explain E0277`.[0m
-[1m[33mwarning[0m: `photocraft-ui-egui` (lib) generated 2 warnings
-[1m[91merror[0m: could not compile `photocraft-ui-egui` (lib) due to 1 previous error; 2 warnings emitted
-[1m[33mwarning[0m: build failed, waiting for other jobs to finish...
+[1m[33mwarning[0m[1m: variant `Scrolling` is never constructed[0m
+   [1m[94m--> [0mcrates/ui-egui/src/touch/gesture.rs:115:5
+    [1m[94m|[0m
+[1m[94m104[0m [1m[94m|[0m enum Mode {
+    [1m[94m|[0m      [1m[94m----[0m [1m[94mvariant in this enum[0m
+[1m[94m...[0m
+[1m[94m115[0m [1m[94m|[0m     Scrolling {
+    [1m[94m|[0m     [1m[33m^^^^^^^^^[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mnote[0m: `Mode` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+    [1m[94m= [0m[1mnote[0m: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+[1m[33mwarning[0m: `photocraft-ui-egui` (lib) generated 3 warnings
+[1m[92m   Compiling[0m photocreate-ios v0.16.0 (/Users/runner/work/photocreate/photocreate/apps/photocreate-ios)
+[1m[92m    Finished[0m `release` profile [optimized] target(s) in 12m 57s
