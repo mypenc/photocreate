@@ -58,7 +58,7 @@ warning: function `config_dir` is never used
     |    ^^^^^^^^^^
 
 warning: `photocreate-android` (lib) generated 3 warnings (run `cargo fix --lib -p photocreate-android` to apply 1 suggestion)
-    Finished `release` profile [optimized] target(s) in 7m 58s
+    Finished `release` profile [optimized] target(s) in 6m 15s
      Copying libraries to /home/runner/work/photocreate/photocreate/android/app/src/main/jniLibs
 Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:buildKotlinToolingMetadata
@@ -76,20 +76,20 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:parseReleaseLocalResources
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
-> Task :app:javaPreCompileRelease
 > Task :app:processReleaseManifestForPackage
+> Task :app:javaPreCompileRelease
 > Task :app:extractProguardFiles
 > Task :app:mergeReleaseJniLibFolders
 > Task :app:processReleaseResources
 > Task :app:mergeReleaseNativeLibs
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libphotocreate_android.so.
 
-> Task :app:checkReleaseDuplicateClasses
 > Task :app:extractReleaseNativeSymbolTables
-> Task :app:desugarReleaseFileDependencies
-> Task :app:mergeReleaseStartupProfile
 > Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
 > Task :app:mergeReleaseArtProfile
 > Task :app:mergeReleaseShaders
@@ -101,8 +101,8 @@ Unable to strip the following libraries, packaging them as they are: libphotocre
 > Task :app:collectReleaseDependencies
 > Task :app:sdkReleaseDependencyData
 > Task :app:writeReleaseAppMetadata
-> Task :app:optimizeReleaseResources
 > Task :app:writeReleaseSigningConfigVersions
+> Task :app:optimizeReleaseResources
 > Task :app:mergeExtDexRelease
 > Task :app:compileReleaseKotlin
 > Task :app:compileReleaseJavaWithJavac NO-SOURCE
@@ -122,7 +122,7 @@ There are no .so files available to package in the APK for x86_64.
 > Task :app:lintVitalReportRelease
 > Task :app:lintVitalRelease
 > Task :app:assembleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793069956753.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793071007768.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/photocreate/photocreate/android/build/reports/problems/problems-report.html
 
@@ -132,6 +132,6 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD SUCCESSFUL in 50s
+BUILD SUCCESSFUL in 37s
 47 actionable tasks: 47 executed
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
