@@ -211,29 +211,55 @@ impl PhotocraftApp {
         }
         // In Full Screen Mode, Tab shows the menu bar, options bar, toolbar and dock (#6760).
         let tabbed_in = !chrome && self.ui.panels.full_screen_chrome;
-        if (chrome || tabbed_in) && self.ui.panels.menu_bar {
-            panels::title_bar(self, ui);
-        }
-        if (chrome && self.ui.panels.options_bar) || tabbed_in {
-            panels::options_bar(self, ui);
-        }
-        if chrome && self.ui.panels.status_bar {
-            panels::status_bar(self, ui);
-        }
-        if (chrome && self.ui.panels.toolbar) || tabbed_in {
-            panels::toolbar(self, ui);
-        }
-        // craft-ui's layout holds the canvas as its protected `canvas` panel.
-        let docking = (chrome && self.ui.panels.dock) || tabbed_in;
-        if docking {
-            panels::dock_area(self, ui);
+        let mode = self.mobile_mode(&ctx);
+        if mode != mobile::Mode::Desktop && chrome {
+            self.touch.paint_tool = self.ui.tool.is_brushlike();
+            mobile::menu_row(self, ui);
+            if self.ui.panels.options_bar {
+                panels::options_bar(self, ui);
+            }
+            mobile::bottom_bar(self, ui, mode);
+            if !gallery::show(self, ui) {
+                if self.mobile.dock_open {
+                    self.ui.panels.dock = true;
+                    panels::dock_area(self, ui);
+                } else {
+                    let t = theme::Tokens::get(&ctx);
+                    let backdrop = prefs_ui::pasteboard_color(self).unwrap_or(t.canvas);
+                    egui::CentralPanel::default().frame(egui::Frame::NONE.fill(backdrop)).show(ui, |ui| {
+                        canvas::document_area(self, ui);
+                    });
+                    panels::properties_window(self, &ctx);
+                }
+            }
+            mobile::tools_window(self, &ctx, mode);
+            self.mobile_frame_end(&ctx);
         } else {
-            let t = theme::Tokens::get(&ctx);
-            let backdrop = if chrome { prefs_ui::pasteboard_color(self).unwrap_or(t.canvas) } else { egui::Color32::BLACK };
-            egui::CentralPanel::default().frame(egui::Frame::NONE.fill(backdrop)).show(ui, |ui| {
-                canvas::document_area(self, ui);
-            });
-            panels::properties_window(self, &ctx);
+            if (chrome || tabbed_in) && self.ui.panels.menu_bar {
+                panels::title_bar(self, ui);
+            }
+            if (chrome && self.ui.panels.options_bar) || tabbed_in {
+                panels::options_bar(self, ui);
+            }
+            if chrome && self.ui.panels.status_bar {
+                panels::status_bar(self, ui);
+            }
+            if (chrome && self.ui.panels.toolbar) || tabbed_in {
+                panels::toolbar(self, ui);
+            }
+            // craft-ui's layout holds the canvas as its protected `canvas` panel.
+            let docking = (chrome && self.ui.panels.dock) || tabbed_in;
+            if docking {
+                panels::dock_area(self, ui);
+            } else {
+                let t = theme::Tokens::get(&ctx);
+                let backdrop = if chrome { prefs_ui::pasteboard_color(self).unwrap_or(t.canvas) } else { egui::Color32::BLACK };
+                egui::CentralPanel::default().frame(egui::Frame::NONE.fill(backdrop)).show(ui, |ui| {
+                    canvas::document_area(self, ui);
+                });
+                panels::properties_window(self, &ctx);
+            }
+
         }
         brush_panel::window(self, &ctx);
         preset_panels::windows(self, &ctx);
@@ -340,5 +366,34 @@ impl PhotocraftApp {
         self.issue_captures(&ctx);
         // Last, after everything drawn this frame: a lost window device can't draw it (#3438).
         gpu_status::check_window(self, &ctx);
+    }
+}
+
+impl PhotocraftApp {
+    /// Per-frame upkeep of the touch layer and the timelapse in the mobile layout.
+    pub(crate) fn mobile_frame_end(&mut self, ctx: &egui::Context) {
+        self.touch.apply_style(ctx);
+        self.touch.show_bar(ctx);
+        self.touch.filter_ime(ctx, None);
+        for a in self.touch.take_actions() {
+            match a {
+                touch::Action::Undo => {
+                    let _ = self.run("edit.undo", serde_json::json!({}));
+                }
+                touch::Action::Redo => {
+                    let _ = self.run("edit.redo", serde_json::json!({}));
+                }
+                touch::Action::DoubleTapUndo => {
+                    // The first tap painted a dab: take it too, so the visible effect is one undo.
+                    let steps = if self.touch.paint_tool { 2 } else { 1 };
+                    for _ in 0..steps {
+                        let _ = self.run("edit.undo", serde_json::json!({}));
+                    }
+                }
+            }
+        }
+        let mut rec = std::mem::take(&mut self.timelapse);
+        rec.tick(self, ctx);
+        self.timelapse = rec;
     }
 }

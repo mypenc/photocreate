@@ -84,6 +84,10 @@ impl PhotocraftApp {
             last_window_title: String::new(),
             fonts_ready: false,
             last_canvas_rect: egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(800.0, 600.0)),
+            touch: touch::Touch::new(),
+            mobile: mobile::State::default(),
+            gallery: gallery::Gallery::default(),
+            timelapse: timelapse::Recorder::new(),
             arrange_start: 0,
             ppp: 1.0,
             drop_canvas_rect: None,
@@ -226,6 +230,11 @@ impl eframe::App for PhotocraftApp {
         if let Some(menu) = self.services.native_menu.as_mut() {
             menu.raw_input(raw_input);
         }
+        // Fingers become the pointer events the widgets know (touch/mod.rs). A finger on the
+        // canvas paints and double-taps to undo; elsewhere it clicks, drags and long-presses.
+        self.touch.sync_double_tap();
+        let canvas_rect = Some(self.last_canvas_rect);
+        self.touch.process(ctx, raw_input, canvas_rect, &[]);
         // While a text field of a floating panel's own window has the keyboard, the dock area
         // hands that window the text keys in this input and converts them there.
         if craft_ui::docking::typing_window(ctx).is_none() {

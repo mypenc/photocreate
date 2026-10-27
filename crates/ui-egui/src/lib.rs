@@ -22,7 +22,11 @@ pub mod file_open;
 pub mod gpu_status;
 pub mod i18n;
 mod icon_data;
+pub mod gallery;
 pub mod icons;
+pub mod mobile;
+pub mod timelapse;
+pub mod touch;
 pub mod jobs_ui;
 pub(crate) mod last_brush;
 pub mod links;
@@ -429,6 +433,14 @@ pub struct PhotocraftApp {
     fonts_ready: bool,
     /// Screen rect of the main canvas last frame (for overlays and the navigator).
     pub last_canvas_rect: egui::Rect,
+    /// Touch input for phones and tablets; see [`touch`].
+    pub touch: touch::Touch,
+    /// Phone / tablet layout state; see [`mobile`].
+    pub mobile: mobile::State,
+    /// Albums, artwork names and timelapse playback; see [`gallery`].
+    pub gallery: gallery::Gallery,
+    /// Records a timelapse frame after edits; see [`timelapse`].
+    pub timelapse: timelapse::Recorder,
     /// Window › Arrange: the first document of the shown run of tiles, when there are more
     /// documents than tiles (`canvas::arranged_cells`).
     pub(crate) arrange_start: usize,
