@@ -14,6 +14,7 @@ use egui::{Align, Color32, Layout, RichText, Sense, TextureHandle, Vec2};
 use serde_json::json;
 
 use crate::PhotocraftApp;
+use crate::icons;
 use crate::timelapse;
 
 /// The artwork file extension.
@@ -184,6 +185,8 @@ pub struct Gallery {
     /// The album being looked at.
     pub cwd: Option<PathBuf>,
     pub edit: Option<Edit>,
+    /// The artwork or album whose action sheet is open.
+    pub sheet: Option<PathBuf>,
     pub new_album: Option<String>,
     pub new_art: bool,
     pub new_name: String,
@@ -205,7 +208,7 @@ impl Gallery {
         r
     }
 
-    fn thumb(&mut self, ctx: &egui::Context, art: &Path) -> Option<TextureHandle> {
+    pub(crate) fn thumb(&mut self, ctx: &egui::Context, art: &Path) -> Option<TextureHandle> {
         if let Some(t) = self.thumbs.get(art) {
             return t.clone();
         }
@@ -220,7 +223,23 @@ impl Gallery {
     }
 }
 
-/// Draw the gallery over the whole window. Returns `true` while it is showing.
+/// What the gallery's action sheet is open for.
+fn sheet_buttons(ui: &mut egui::Ui, is_dir: bool) -> Option<&'static str> {
+    let mut out = None;
+    let items: &[(&str, &str)] = if is_dir { &[("open", "Open"), ("rename", "Rename"), ("move", "Move to album"), ("delete", "Delete")] } else { &[("open", "Open"), ("rename", "Rename"), ("move", "Move to album"), ("play", "Play timelapse"), ("gif", "Export timelapse as GIF"), ("delete", "Delete")] };
+    for (key, label) in items {
+        if ui.add(egui::Button::new(*label).min_size(Vec2::new(260.0, 44.0))).clicked() {
+            out = Some(*key);
+        }
+    }
+    out
+}
+
+fn card_icon(ui: &egui::Ui, rect: egui::Rect, name: &str, size: f32) {
+    icons::paint(ui, rect, name, size, Color32::from_gray(190));
+}
+
+/// Draw the gallery. Returns `true` while it is showing.
 pub fn show(app: &mut PhotocraftApp, ui: &mut egui::Ui) -> bool {
     if !app.gallery.open {
         return false;
@@ -230,29 +249,31 @@ pub fn show(app: &mut PhotocraftApp, ui: &mut egui::Ui) -> bool {
     let cwd = app.gallery.cwd.clone().filter(|p| p.starts_with(&root) && p.is_dir()).unwrap_or_else(|| root.clone());
     let mut go: Option<PathBuf> = None;
     let mut open: Option<PathBuf> = None;
-    let mut ask: Option<Edit> = None;
+    let mut sheet: Option<PathBuf> = None;
     let mut play: Option<PathBuf> = None;
     let mut gif: Option<PathBuf> = None;
+    let has_doc = !app.session.documents().is_empty();
 
     ui.horizontal(|ui| {
-        if cwd != root && ui.add(egui::Button::new("‹ Back").min_size(Vec2::new(64.0, 40.0))).clicked() {
+        if cwd != root && icons::button(ui, "chevron-left", 44.0, false, "Back").clicked() {
             go = cwd.parent().map(Path::to_path_buf);
         }
-        let title = if cwd == root { "Gallery".to_string() } else { cwd.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default() };
+        let title = if cwd == root { "My artwork".to_string() } else { cwd.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default() };
         ui.heading(title);
         ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if ui.add(egui::Button::new("＋ Artwork").min_size(Vec2::new(96.0, 40.0))).clicked() {
+            if has_doc && icons::button(ui, "x", 44.0, false, "Back to canvas").clicked() {
+                app.gallery.open = false;
+            }
+            if ui.add(egui::Button::new("New album").min_size(Vec2::new(0.0, 40.0))).clicked() {
+                app.gallery.new_album = Some(String::new());
+            }
+            if ui.add(egui::Button::new(RichText::new("New artwork").strong()).fill(ui.visuals().selection.bg_fill).min_size(Vec2::new(0.0, 40.0))).clicked() {
                 app.gallery.new_art = true;
                 app.gallery.new_name = "Untitled".into();
             }
-            if ui.add(egui::Button::new("📁 Album").min_size(Vec2::new(88.0, 40.0))).clicked() {
-                app.gallery.new_album = Some(String::new());
-            }
-            if !app.session.documents().is_empty() && ui.add(egui::Button::new("Canvas").min_size(Vec2::new(72.0, 40.0))).clicked() {
-                app.gallery.open = false;
-            }
         });
     });
+    ui.label(RichText::new("Tap an artwork to open it. Tap the dots on it to rename, move, delete or play its timelapse.").small().weak());
     if let Some(s) = app.gallery.status.clone() {
         ui.label(RichText::new(s).small());
     }
@@ -260,85 +281,62 @@ pub fn show(app: &mut PhotocraftApp, ui: &mut egui::Ui) -> bool {
 
     let entries = list(&cwd);
     egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| {
+        let gap = 12.0;
+        let cols = (((ui.available_width() + gap) / (150.0 + gap)).floor() as usize).max(2);
+        let card = ((ui.available_width() - gap * (cols as f32 - 1.0)) / cols as f32).clamp(110.0, 220.0);
         if entries.is_empty() {
-            ui.add_space(40.0);
-            ui.vertical_centered(|ui| ui.label("Nothing here yet. Tap ＋ Artwork to start drawing."));
+            ui.add_space(24.0);
+            ui.label("Nothing here yet. Tap New artwork to start drawing.");
+            ui.add_space(12.0);
         }
-        let card = 150.0_f32;
-        let cols = ((ui.available_width() / (card + 12.0)).floor() as usize).max(1);
-        egui::Grid::new("gallery-grid").spacing([12.0, 12.0]).show(ui, |ui| {
-            for (i, e) in entries.iter().enumerate() {
+        // "New artwork" is the first card, so a first-time visitor has one obvious place to tap.
+        let mut cells: Vec<Option<&Entry>> = vec![None];
+        cells.extend(entries.iter().map(Some));
+        egui::Grid::new("gallery-grid").spacing([gap, gap]).show(ui, |ui| {
+            for (i, cell) in cells.iter().enumerate() {
                 ui.vertical(|ui| {
                     let (rect, resp) = ui.allocate_exact_size(Vec2::splat(card), Sense::click());
-                    let p = ui.painter();
-                    p.rect_filled(rect, 8.0, Color32::from_gray(45));
-                    if e.is_dir {
-                        p.text(rect.center(), egui::Align2::CENTER_CENTER, "📁", egui::FontId::proportional(54.0), Color32::from_gray(200));
-                    } else if let Some(t) = app.gallery.thumb(&ctx, &e.path) {
-                        let s = t.size_vec2();
-                        let k = (card - 12.0) / s.x.max(s.y).max(1.0);
-                        p.image(t.id(), egui::Rect::from_center_size(rect.center(), s * k), egui::Rect::from_min_max(egui::pos2(0.0, 0.0), egui::pos2(1.0, 1.0)), Color32::WHITE);
-                    } else {
-                        p.text(rect.center(), egui::Align2::CENTER_CENTER, "🖼", egui::FontId::proportional(48.0), Color32::from_gray(150));
-                    }
-                    if resp.clicked() {
-                        if e.is_dir {
-                            go = Some(e.path.clone());
-                        } else {
-                            open = Some(e.path.clone());
-                        }
-                    }
-                    resp.context_menu(|ui| {
-                        if ui.button("Rename").clicked() {
-                            ask = Some(Edit::Rename(e.path.clone(), e.name.clone()));
-                            ui.close();
-                        }
-                        if ui.button("Move to album…").clicked() {
-                            ask = Some(Edit::Move(e.path.clone()));
-                            ui.close();
-                        }
-                        if !e.is_dir {
-                            if ui.button("▶ Timelapse").clicked() {
-                                play = Some(e.path.clone());
-                                ui.close();
-                            }
-                            if ui.button("Export timelapse GIF").clicked() {
-                                gif = Some(e.path.clone());
-                                ui.close();
+                    let p = ui.painter().clone();
+                    match cell {
+                        None => {
+                            p.rect_stroke(rect, 10.0, egui::Stroke::new(2.0, Color32::from_gray(110)), egui::StrokeKind::Inside);
+                            card_icon(ui, egui::Rect::from_center_size(rect.center(), Vec2::splat(44.0)), "plus", 44.0);
+                            p.text(egui::pos2(rect.center().x, rect.center().y + 40.0), egui::Align2::CENTER_CENTER, "New artwork", egui::FontId::proportional(14.0), Color32::from_gray(200));
+                            if resp.clicked() {
+                                app.gallery.new_art = true;
+                                app.gallery.new_name = "Untitled".into();
                             }
                         }
-                        if ui.button("Delete").clicked() {
-                            ask = Some(Edit::Delete(e.path.clone()));
-                            ui.close();
-                        }
-                    });
-                    ui.horizontal(|ui| {
-                        ui.add_sized([card - 34.0, 22.0], egui::Label::new(RichText::new(&e.name).strong()).truncate());
-                        ui.menu_button("⋮", |ui| {
-                            if ui.button("Rename").clicked() {
-                                ask = Some(Edit::Rename(e.path.clone(), e.name.clone()));
-                                ui.close();
+                        Some(e) => {
+                            p.rect_filled(rect, 10.0, Color32::from_gray(48));
+                            if e.is_dir {
+                                card_icon(ui, egui::Rect::from_center_size(rect.center(), Vec2::splat(64.0)), "folder", 64.0);
+                            } else if let Some(t) = app.gallery.thumb(&ctx, &e.path) {
+                                let s = t.size_vec2();
+                                let k = (card - 14.0) / s.x.max(s.y).max(1.0);
+                                let r = egui::Rect::from_center_size(rect.center(), s * k);
+                                p.rect_filled(r, 4.0, Color32::WHITE);
+                                p.image(t.id(), r, egui::Rect::from_min_max(egui::pos2(0.0, 0.0), egui::pos2(1.0, 1.0)), Color32::WHITE);
+                            } else {
+                                card_icon(ui, egui::Rect::from_center_size(rect.center(), Vec2::splat(48.0)), "image", 48.0);
                             }
-                            if ui.button("Move to album…").clicked() {
-                                ask = Some(Edit::Move(e.path.clone()));
-                                ui.close();
-                            }
-                            if !e.is_dir {
-                                if ui.button("▶ Timelapse").clicked() {
-                                    play = Some(e.path.clone());
-                                    ui.close();
-                                }
-                                if ui.button("Export timelapse GIF").clicked() {
-                                    gif = Some(e.path.clone());
-                                    ui.close();
+                            if resp.clicked() {
+                                if e.is_dir {
+                                    go = Some(e.path.clone());
+                                } else {
+                                    open = Some(e.path.clone());
                                 }
                             }
-                            if ui.button("Delete").clicked() {
-                                ask = Some(Edit::Delete(e.path.clone()));
-                                ui.close();
+                            // The dots: a big target in the card's corner.
+                            let dots = egui::Rect::from_min_size(egui::pos2(rect.right() - 44.0, rect.top()), Vec2::splat(44.0));
+                            p.circle_filled(dots.center(), 14.0, Color32::from_black_alpha(150));
+                            card_icon(ui, egui::Rect::from_center_size(dots.center(), Vec2::splat(20.0)), "ellipsis", 20.0);
+                            if ui.interact(dots, resp.id.with("dots"), Sense::click()).clicked() {
+                                sheet = Some(e.path.clone());
                             }
-                        });
-                    });
+                            ui.add_sized([card, 22.0], egui::Label::new(RichText::new(&e.name).strong()).truncate());
+                        }
+                    }
                 });
                 if (i + 1) % cols == 0 {
                     ui.end_row();
@@ -359,8 +357,40 @@ pub fn show(app: &mut PhotocraftApp, ui: &mut egui::Ui) -> bool {
             Err(e) => app.gallery.status = Some(e),
         }
     }
-    if let Some(e) = ask {
-        app.gallery.edit = Some(e);
+    if let Some(p) = sheet {
+        app.gallery.sheet = Some(p);
+    }
+    // The action sheet for one artwork or album.
+    if let Some(path) = app.gallery.sheet.clone() {
+        let is_dir = path.is_dir();
+        let mut chosen = None;
+        let mut close = false;
+        egui::Window::new(path.file_stem().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default()).collapsible(false).resizable(false).anchor(egui::Align2::CENTER_CENTER, [0.0, 0.0]).show(&ctx, |ui| {
+            chosen = sheet_buttons(ui, is_dir);
+            if ui.add(egui::Button::new("Cancel").min_size(Vec2::new(260.0, 44.0))).clicked() {
+                close = true;
+            }
+        });
+        if let Some(k) = chosen {
+            close = true;
+            let name = path.file_stem().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
+            match k {
+                "open" if is_dir => app.gallery.cwd = Some(path.clone()),
+                "open" => match app.run("file.open", json!({ "path": path.to_string_lossy() })) {
+                    Ok(_) => app.gallery.open = false,
+                    Err(e) => app.gallery.status = Some(e),
+                },
+                "rename" => app.gallery.edit = Some(Edit::Rename(path.clone(), name)),
+                "move" => app.gallery.edit = Some(Edit::Move(path.clone())),
+                "delete" => app.gallery.edit = Some(Edit::Delete(path.clone())),
+                "play" => play = Some(path.clone()),
+                "gif" => gif = Some(path.clone()),
+                _ => {}
+            }
+        }
+        if close {
+            app.gallery.sheet = None;
+        }
     }
     if let Some(p) = play {
         start_player(app, p);
@@ -547,7 +577,7 @@ fn player(app: &mut PhotocraftApp, ctx: &egui::Context) {
         }
         let last = p.files.len().saturating_sub(1);
         ui.horizontal(|ui| {
-            if ui.button(if p.playing { "⏸" } else { "▶" }).clicked() {
+            if ui.button(if p.playing { "Pause" } else { "Play" }).clicked() {
                 if !p.playing && p.pos >= last {
                     p.pos = 0;
                 }

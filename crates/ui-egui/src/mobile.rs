@@ -17,6 +17,7 @@ use serde_json::json;
 
 use crate::PhotocraftApp;
 use crate::icons;
+use crate::dock::Group;
 use crate::state::Tool;
 
 /// Widest window (points) still laid out as a phone.
@@ -60,8 +61,12 @@ pub struct State {
     pub pref: Pref,
     /// The tool picker is open.
     pub tools_open: bool,
-    /// The panel dock is showing beside the canvas.
-    pub dock_open: bool,
+    /// Panels open as floating windows, oldest first (the last one is on top).
+    pub open: Vec<Group>,
+    /// The list of all panels is open.
+    pub panel_list: bool,
+    /// The desktop layout's default panels were cleared once.
+    started: bool,
 }
 
 impl PhotocraftApp {
@@ -81,10 +86,140 @@ pub fn menu_row(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     });
 }
 
-fn open_panel(app: &mut PhotocraftApp, id: &str) {
-    let _ = app.run(id, json!({}));
-    app.mobile.dock_open = true;
-    app.ui.panels.dock = true;
+/// Open `g` as a floating window (or bring it back to the top).
+pub fn open_group(app: &mut PhotocraftApp, g: Group) {
+    app.mobile.open.retain(|x| *x != g);
+    app.mobile.open.push(g);
+}
+
+/// Panels the Window menu or a command asked for arrive as "shown" in the desktop dock, which
+/// the mobile layout does not draw: they float instead.
+fn take_reveals(app: &mut PhotocraftApp) {
+    let first = !app.mobile.started;
+    app.mobile.started = true;
+    for g in Group::ALL {
+        if g.shown(&app.ui.panels) {
+            *g.shown_mut(&mut app.ui.panels) = false;
+            if !first {
+                open_group(app, g);
+            }
+        }
+    }
+}
+
+fn group_title(g: Group) -> &'static str {
+    match g {
+        Group::Color => "Color",
+        Group::Properties => "Properties",
+        Group::Character => "Text",
+        Group::Navigator => "Navigator",
+        Group::History => "History",
+        Group::Layers => "Layers",
+        Group::Brushes => "Brushes",
+    }
+}
+
+/// The floating panels, like a paint app's: each is its own window over the canvas, with its
+/// tabs along the top and a big close button. Drag the title row to move, the corner to resize.
+pub fn floating_panels(app: &mut PhotocraftApp, ctx: &egui::Context, mode: Mode) {
+    take_reveals(app);
+    let screen = ctx.content_rect();
+    let width = if mode == Mode::Phone { (screen.width() - 16.0).clamp(240.0, 380.0) } else { 360.0 };
+    let height = (screen.height() * if mode == Mode::Phone { 0.5 } else { 0.62 }).clamp(220.0, 560.0);
+    let pro = crate::theme::Tokens::get(ctx).pro;
+    let mut close: Option<Group> = None;
+    let mut raise: Option<Group> = None;
+    let open = app.mobile.open.clone();
+    for (n, g) in open.iter().copied().enumerate() {
+        let pos = if mode == Mode::Phone { egui::pos2(8.0, screen.top() + 96.0 + 14.0 * n as f32) } else { egui::pos2(screen.right() - width - 12.0, screen.top() + 96.0 + 28.0 * n as f32) };
+        let resp = egui::Window::new(group_title(g))
+            .id(egui::Id::new(("mobile-panel", g.key())))
+            .title_bar(false)
+            .collapsible(false)
+            .resizable(true)
+            .default_pos(pos)
+            .default_size([width, height])
+            .min_width(220.0)
+            .constrain_to(screen)
+            .show(ctx, |ui| {
+                ui.horizontal(|ui| {
+                    // The title row is the handle: drag it to move the panel.
+                    let tabs = app.ui.dock.visible_tabs(g, pro);
+                    let sel = *g.tab_mut(&mut app.ui.dock_tabs);
+                    let mut pick = None;
+                    egui::ScrollArea::horizontal().id_salt(("mobile-tabs", g.key())).max_width(ui.available_width() - 52.0).scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden).show(ui, |ui| {
+                        ui.horizontal(|ui| {
+                            for (i, name) in &tabs {
+                                if ui.add(egui::Button::new(crate::i18n::tr(crate::i18n::current(), name)).min_size(egui::vec2(0.0, 36.0)).selected(*i == sel)).clicked() {
+                                    pick = Some(*i);
+                                }
+                            }
+                        });
+                    });
+                    if let Some(i) = pick {
+                        *g.tab_mut(&mut app.ui.dock_tabs) = i;
+                    }
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        if icons::button(ui, "x", 36.0, false, "Close").clicked() {
+                            close = Some(g);
+                        }
+                    });
+                });
+                ui.separator();
+                let tab = *g.tab_mut(&mut app.ui.dock_tabs);
+                let body_h = (ui.available_height()).max(120.0);
+                if g.scrolls_itself(tab) {
+                    ui.set_min_height(body_h);
+                    crate::panels::dock_body(app, ui, g, tab);
+                } else {
+                    ui.spacing_mut().scroll.fade.strength = 0.0;
+                    egui::ScrollArea::vertical().id_salt(("mobile-body", g.key())).auto_shrink([false, false]).show(ui, |ui| crate::panels::dock_body(app, ui, g, tab));
+                }
+            });
+        if let Some(r) = resp
+            && r.response.clicked()
+        {
+            raise = Some(g);
+        }
+    }
+    if let Some(g) = close {
+        app.mobile.open.retain(|x| *x != g);
+    } else if let Some(g) = raise
+        && app.mobile.open.last() != Some(&g)
+    {
+        open_group(app, g);
+    }
+    panel_list(app, ctx);
+}
+
+/// A list of every panel, to open any of them.
+fn panel_list(app: &mut PhotocraftApp, ctx: &egui::Context) {
+    if !app.mobile.panel_list {
+        return;
+    }
+    let mut picked = None;
+    let mut close = false;
+    egui::Window::new("Panels").collapsible(false).resizable(false).anchor(egui::Align2::RIGHT_BOTTOM, [-8.0, -72.0]).show(ctx, |ui| {
+        for g in Group::ALL {
+            if ui.add(egui::Button::new(group_title(g)).min_size(egui::vec2(180.0, 40.0)).selected(app.mobile.open.contains(&g))).clicked() {
+                picked = Some(g);
+            }
+        }
+        if ui.add(egui::Button::new("Brush settings").min_size(egui::vec2(180.0, 40.0))).clicked() {
+            let _ = app.run("window.panel.brushSettings", json!({}));
+            close = true;
+        }
+        if ui.add(egui::Button::new("Close").min_size(egui::vec2(180.0, 40.0))).clicked() {
+            close = true;
+        }
+    });
+    if let Some(g) = picked {
+        open_group(app, g);
+        app.mobile.panel_list = false;
+    }
+    if close {
+        app.mobile.panel_list = false;
+    }
 }
 
 fn tool_button(ui: &mut egui::Ui, app: &mut PhotocraftApp, tool: Tool, size: f32) {
@@ -111,11 +246,11 @@ pub fn bottom_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui, mode: Mode) {
                 tool_button(ui, app, Tool::Eraser, size);
                 ui.separator();
                 // Brush: type and settings.
-                if icons::button(ui, "brush", size, false, "Brushes").clicked() {
-                    open_panel(app, "window.panel.brushes");
+                if icons::button(ui, "brush", size, app.mobile.open.contains(&Group::Brushes), "Brushes").clicked() {
+                    open_group(app, Group::Brushes);
                 }
                 if icons::button(ui, "sliders-horizontal", size, false, "Brush settings").clicked() {
-                    open_panel(app, "window.panel.brushSettings");
+                    let _ = app.run("window.panel.brushSettings", json!({}));
                 }
                 // Colour: the swatch is the foreground colour.
                 let fg = app.session.tools.foreground;
@@ -124,10 +259,11 @@ pub fn bottom_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui, mode: Mode) {
                 ui.painter().rect_filled(rect.shrink(5.0), 8.0, Color32::from_rgb(c(fg[0]), c(fg[1]), c(fg[2])));
                 ui.painter().rect_stroke(rect.shrink(5.0), 8.0, egui::Stroke::new(1.5, Color32::GRAY), egui::StrokeKind::Inside);
                 if resp.on_hover_text("Color").clicked() {
-                    open_panel(app, "window.panel.color");
+                    open_group(app, Group::Color);
+                    *Group::Color.tab_mut(&mut app.ui.dock_tabs) = app.ui.dock.visible_tabs(Group::Color, crate::theme::Tokens::get(ui.ctx()).pro).iter().find(|(_, n)| *n == "Color").map_or(0, |(i, _)| *i);
                 }
-                if icons::button(ui, "layers", size, false, "Layers").clicked() {
-                    open_panel(app, "window.panel.layers");
+                if icons::button(ui, "layers", size, app.mobile.open.contains(&Group::Layers), "Layers").clicked() {
+                    open_group(app, Group::Layers);
                 }
                 ui.separator();
                 if icons::button(ui, "undo-2", size, false, "Undo").clicked() {
@@ -140,9 +276,8 @@ pub fn bottom_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui, mode: Mode) {
                 if icons::button(ui, "grid-3x3", size, app.mobile.tools_open, "All tools").clicked() {
                     app.mobile.tools_open = !app.mobile.tools_open;
                 }
-                if icons::button(ui, "panel-right", size, app.mobile.dock_open, "Panels").clicked() {
-                    app.mobile.dock_open = !app.mobile.dock_open;
-                    app.ui.panels.dock = app.mobile.dock_open;
+                if icons::button(ui, "panel-right", size, app.mobile.panel_list, "All panels").clicked() {
+                    app.mobile.panel_list = !app.mobile.panel_list;
                 }
             });
         });

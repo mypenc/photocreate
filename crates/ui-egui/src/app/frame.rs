@@ -215,22 +215,27 @@ impl PhotocraftApp {
         if mode != mobile::Mode::Desktop && chrome {
             self.touch.paint_tool = self.ui.tool.is_brushlike();
             mobile::menu_row(self, ui);
-            if self.ui.panels.options_bar {
+            if self.ui.panels.options_bar && !self.session.documents().is_empty() && !self.gallery.open {
                 panels::options_bar(self, ui);
             }
-            mobile::bottom_bar(self, ui, mode);
-            if !gallery::show(self, ui) {
-                if self.mobile.dock_open {
-                    self.ui.panels.dock = true;
-                    panels::dock_area(self, ui);
-                } else {
-                    let t = theme::Tokens::get(&ctx);
-                    let backdrop = prefs_ui::pasteboard_color(self).unwrap_or(t.canvas);
-                    egui::CentralPanel::default().frame(egui::Frame::NONE.fill(backdrop)).show(ui, |ui| {
-                        canvas::document_area(self, ui);
-                    });
-                    panels::properties_window(self, &ctx);
-                }
+            if self.session.documents().is_empty() {
+                self.gallery.open = true;
+            }
+            if !self.session.documents().is_empty() {
+                mobile::bottom_bar(self, ui, mode);
+            }
+            if self.gallery.open {
+                egui::CentralPanel::default().show(ui, |ui| {
+                    gallery::show(self, ui);
+                });
+            } else {
+                let t = theme::Tokens::get(&ctx);
+                let backdrop = prefs_ui::pasteboard_color(self).unwrap_or(t.canvas);
+                egui::CentralPanel::default().frame(egui::Frame::NONE.fill(backdrop)).show(ui, |ui| {
+                    canvas::document_area(self, ui);
+                });
+                panels::properties_window(self, &ctx);
+                mobile::floating_panels(self, &ctx, mode);
             }
             mobile::tools_window(self, &ctx, mode);
             self.mobile_frame_end(&ctx);
@@ -393,7 +398,10 @@ impl PhotocraftApp {
             }
         }
         let mut rec = std::mem::take(&mut self.timelapse);
-        rec.tick(self, ctx);
+        let wrote = rec.tick(self, ctx);
         self.timelapse = rec;
+        if wrote {
+            self.gallery.refresh();
+        }
     }
 }

@@ -41,6 +41,16 @@ struct Sticky {
 }
 
 #[derive(Default)]
+/// A finger drag that may scroll whatever list is under it.
+#[derive(Clone, Copy, Debug)]
+struct DragScroll {
+    on_canvas: bool,
+    origin: Pt,
+    last: Pt,
+    moves: u32,
+    scrolling: bool,
+}
+
 pub struct Touch {
     /// Touch layer active. On by default on Android; also switched on by the first touch seen
     /// on a desktop touchscreen.
@@ -74,6 +84,12 @@ pub struct Touch {
     /// A position loaded from the preferences, applied once on the first frame the bar shows.
     bar_restore: Option<Pos2>,
     rec: Recognizer,
+    /// Where the canvas is this frame (a finger there paints; elsewhere it may scroll).
+    canvas_hint: Option<egui::Rect>,
+    /// A widget held the drag last frame (a slider, a title bar, a scroll area's own drag).
+    ui_dragging: bool,
+    /// The one-finger drag in progress, for scrolling lists and panels from anywhere.
+    drag: Option<DragScroll>,
     queue: VecDeque<Event>,
     shift: Sticky,
     ctrl: Sticky,
@@ -167,6 +183,8 @@ impl Touch {
         let now = raw.time.unwrap_or_else(|| ctx.input(|i| i.time));
         let mut outs = Vec::new();
         let mut touch_frame = false;
+        self.canvas_hint = canvas;
+        self.ui_dragging = ctx.dragged_id().is_some();
         for e in &raw.events {
             if let Event::Touch { id, phase, pos, .. } = e {
                 touch_frame = true;
@@ -235,12 +253,30 @@ impl Touch {
         let pos = |p: Pt| Pos2::new(p.x, p.y);
         let m = self.mods();
         match o {
-            Out::Move(p) => self.push(Event::PointerMoved(pos(p))),
+            Out::Move(p) => {
+                self.push(Event::PointerMoved(pos(p)));
+                // Drag a list or panel from anywhere, like a feed: when the finger has gone a
+                // little way and no widget took the drag (not a slider, title bar or the scroll
+                // area's own handle), the movement scrolls what is under the finger.
+                if let Some(mut d) = self.drag {
+                    d.moves += 1;
+                    let far = (p.x - d.origin.x).hypot(p.y - d.origin.y) > 14.0;
+                    if !d.on_canvas && d.moves >= 2 && (d.scrolling || (far && !self.ui_dragging)) {
+                        d.scrolling = true;
+                        let delta = Vec2::new(p.x - d.last.x, p.y - d.last.y);
+                        self.push(Event::MouseWheel { source: egui::MouseWheelSource::Unknown, unit: MouseWheelUnit::Point, delta, phase: TouchPhase::Move, modifiers: m });
+                    }
+                    d.last = p;
+                    self.drag = Some(d);
+                }
+            }
             Out::Press(b, p) => {
+                self.drag = Some(DragScroll { on_canvas: self.canvas_hint.is_some_and(|r| r.contains(pos(p))), origin: p, last: p, moves: 0, scrolling: false });
                 let button = if b == Btn::Primary { PointerButton::Primary } else { PointerButton::Secondary };
                 self.push(Event::PointerButton { pos: pos(p), button, pressed: true, modifiers: m });
             }
             Out::Release(b, p) => {
+                self.drag = None;
                 let button = if b == Btn::Primary { PointerButton::Primary } else { PointerButton::Secondary };
                 self.push(Event::PointerButton { pos: pos(p), button, pressed: false, modifiers: m });
                 self.consume_one_shots();

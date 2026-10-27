@@ -140,12 +140,12 @@ impl Recorder {
     }
 
     /// Once per frame. Takes a frame after an edit when no pointer is down.
-    pub fn tick(&mut self, app: &PhotocraftApp, ctx: &egui::Context) {
+    pub fn tick(&mut self, app: &PhotocraftApp, ctx: &egui::Context) -> bool {
         if !self.enabled {
-            return;
+            return false;
         }
-        let Some(st) = app.session.active() else { return };
-        let Some(path) = st.path.as_deref().map(PathBuf::from) else { return };
+        let Some(st) = app.session.active() else { return false };
+        let Some(path) = st.path.as_deref().map(PathBuf::from) else { return false };
         let key = (st.doc.id.0, st.revision);
         let dir = dir_for(&path);
         if self.dir.as_deref() != Some(dir.as_path()) {
@@ -166,7 +166,7 @@ impl Recorder {
             if self.dirty {
                 ctx.request_repaint_after(std::time::Duration::from_millis(400));
             }
-            return;
+            return false;
         }
         let (w0, h0) = (st.doc.size.width.max(1), st.doc.size.height.max(1));
         let k = (MAX_SIDE as f32 / w0.max(h0) as f32).min(1.0);
@@ -189,6 +189,7 @@ impl Recorder {
         }
         self.last_time = now;
         self.dirty = false;
+        true
     }
 }
 
