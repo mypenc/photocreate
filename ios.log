@@ -26,10 +26,10 @@
 [1m[92m   Compiling[0m photocraft-cms v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/cms)
 [1m[92m   Compiling[0m photocraft-geom v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/geom)
 [1m[92m   Compiling[0m photocraft-text v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/text)
+[1m[92m   Compiling[0m photocraft-codecs v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/codecs)
 [1m[92m   Compiling[0m photocraft-color v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/color)
 [1m[92m   Compiling[0m photocraft-raster v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/raster)
 [1m[92m   Compiling[0m photocraft-doc v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/doc)
-[1m[92m   Compiling[0m photocraft-codecs v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/codecs)
 [1m[92m   Compiling[0m photocraft-algo v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/algo)
 [1m[92m   Compiling[0m photocraft-vector v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/vector)
 [1m[92m   Compiling[0m photocraft-compose v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/compose)
@@ -67,4 +67,3 @@
 
 [1m[33mwarning[0m: `photocraft-ui-egui` (lib) generated 2 warnings
 [1m[92m   Compiling[0m photocreate-ios v0.16.0 (/Users/runner/work/photocreate/photocreate/apps/photocreate-ios)
-[1m[92m    Finished[0m `release` profile [optimized] target(s) in 12m 21s
