@@ -40,7 +40,6 @@ struct Sticky {
     locked: bool,
 }
 
-#[derive(Default)]
 /// A finger drag that may scroll whatever list is under it.
 #[derive(Clone, Copy, Debug)]
 struct DragScroll {
@@ -51,6 +50,7 @@ struct DragScroll {
     scrolling: bool,
 }
 
+#[derive(Default)]
 pub struct Touch {
     /// Touch layer active. On by default on Android; also switched on by the first touch seen
     /// on a desktop touchscreen.
