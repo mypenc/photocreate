@@ -13,24 +13,12 @@
 90-   |       ^^^^^^^^^^^
 91-   |
 92-   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
---
-149:e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
-150-    1. Kotlin compile daemon is ready
-151-
-152-> Task :app:compileReleaseJavaWithJavac NO-SOURCE
-153-> Task :app:generateReleaseLintVitalReportModel
-154-> Task :app:dexBuilderRelease
-155-> Task :app:mergeReleaseGlobalSynthetics
-156-> Task :app:processReleaseJavaRes
-157-> Task :app:mergeReleaseJavaResource
-158-> Task :app:mergeDexRelease
-159-> Task :app:compileReleaseArtProfile
-160-
-161-> Task :app:packageRelease
-162-There are no .so files available to package in the APK for x86_64.
-163-
 
 ==== TAIL ====
+    |
+324 |         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
+    |                                                  ^^^
+    |
     = note: `#[warn(deprecated)]` on by default
 
 warning: variant `Scrolling` is never constructed
@@ -70,7 +58,7 @@ warning: function `config_dir` is never used
     |    ^^^^^^^^^^
 
 warning: `photocreate-android` (lib) generated 3 warnings (run `cargo fix --lib -p photocreate-android` to apply 1 suggestion)
-    Finished `release` profile [optimized] target(s) in 8m 01s
+    Finished `release` profile [optimized] target(s) in 7m 52s
      Copying libraries to /home/runner/work/photocreate/photocreate/android/app/src/main/jniLibs
 Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:buildKotlinToolingMetadata
@@ -91,24 +79,24 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 > Task :app:javaPreCompileRelease
 > Task :app:extractProguardFiles
 > Task :app:mergeReleaseJniLibFolders
-> Task :app:processReleaseManifestForPackage
-> Task :app:mergeReleaseNativeLibs
-> Task :app:checkReleaseDuplicateClasses
 > Task :app:desugarReleaseFileDependencies
+> Task :app:processReleaseManifestForPackage
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:mergeReleaseNativeLibs
 > Task :app:mergeReleaseStartupProfile
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libphotocreate_android.so.
 
-> Task :app:processReleaseResources
-> Task :app:extractReleaseNativeSymbolTables
-> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
 > Task :app:mergeReleaseArtProfile
 > Task :app:mergeReleaseShaders
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
 > Task :app:compileReleaseShaders NO-SOURCE
 > Task :app:generateReleaseAssets UP-TO-DATE
 > Task :app:mergeReleaseAssets
 > Task :app:compressReleaseAssets
+> Task :app:processReleaseResources
 > Task :app:extractReleaseVersionControlInfo
 > Task :app:collectReleaseDependencies
 > Task :app:sdkReleaseDependencyData
@@ -116,11 +104,7 @@ Unable to strip the following libraries, packaging them as they are: libphotocre
 > Task :app:writeReleaseSigningConfigVersions
 > Task :app:optimizeReleaseResources
 > Task :app:mergeExtDexRelease
-
 > Task :app:compileReleaseKotlin
-e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
-    1. Kotlin compile daemon is ready
-
 > Task :app:compileReleaseJavaWithJavac NO-SOURCE
 > Task :app:generateReleaseLintVitalReportModel
 > Task :app:dexBuilderRelease
@@ -138,7 +122,7 @@ There are no .so files available to package in the APK for x86_64.
 > Task :app:lintVitalReportRelease
 > Task :app:lintVitalRelease
 > Task :app:assembleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793071840854.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793072752979.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/photocreate/photocreate/android/build/reports/problems/problems-report.html
 
@@ -148,6 +132,6 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD SUCCESSFUL in 55s
+BUILD SUCCESSFUL in 50s
 47 actionable tasks: 47 executed
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
