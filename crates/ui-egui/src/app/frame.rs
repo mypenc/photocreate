@@ -6,6 +6,8 @@ use super::{
     wide_angle_ui, work_area, workspace_ui,
 };
 
+use crate::{gallery, mobile, touch};
+
 impl PhotocraftApp {
     /// Wait out the rest of [`Self::min_frame_ms`] since the last frame started.
     fn cap_frame_rate(&mut self) {
