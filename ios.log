@@ -1,57 +1,114 @@
 
 ==== TAIL ====
-[1m[92m    Updating[0m crates.io index
-[1m[33mwarning[0m: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
-[1m[33mwarning[0m: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
-[1m[33mwarning[0m: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
-[1m[96mhelp[0m: Check that the patched package version and available features are compatible
-      with the dependency requirements. If the patch has a different version from
-      what is locked in the Cargo.lock file, run `cargo update` to use the new
-      version. This may also occur with an optional dependency that is not enabled.
-[1m[92m     Locking[0m 14 packages to latest Rust 1.95 compatible versions
-[1m[92m      Adding[0m android_log-sys v0.3.2
-[1m[92m      Adding[0m android_logger v0.14.1 [1m[33m(available: v0.15.1)[0m
-[1m[92m      Adding[0m cesu8 v1.1.0
-[1m[92m      Adding[0m env_filter v0.1.4
-[1m[92m      Adding[0m jni v0.21.1 [1m[33m(available: v0.22.4)[0m
-[1m[92m      Adding[0m windows-sys v0.45.0
-[1m[92m      Adding[0m windows-targets v0.42.2
-[1m[92m      Adding[0m windows_aarch64_gnullvm v0.42.2
-[1m[92m      Adding[0m windows_aarch64_msvc v0.42.2
-[1m[92m      Adding[0m windows_i686_gnu v0.42.2
-[1m[92m      Adding[0m windows_i686_msvc v0.42.2
-[1m[92m      Adding[0m windows_x86_64_gnu v0.42.2
-[1m[92m      Adding[0m windows_x86_64_gnullvm v0.42.2
-[1m[92m      Adding[0m windows_x86_64_msvc v0.42.2
-[1m[92m   Compiling[0m photocraft-cms v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/cms)
-[1m[92m   Compiling[0m photocraft-geom v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/geom)
-[1m[92m   Compiling[0m photocraft-text v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/text)
-[1m[92m   Compiling[0m photocraft-codecs v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/codecs)
-[1m[92m   Compiling[0m photocraft-color v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/color)
-[1m[92m   Compiling[0m photocraft-raster v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/raster)
-[1m[92m   Compiling[0m photocraft-doc v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/doc)
-[1m[92m   Compiling[0m photocraft-algo v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/algo)
-[1m[92m   Compiling[0m photocraft-vector v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/vector)
-[1m[92m   Compiling[0m photocraft-compose v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/compose)
-[1m[92m   Compiling[0m photocraft-psd v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/psd)
-[1m[92m   Compiling[0m photocraft-raw v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/raw)
-[1m[92m   Compiling[0m photocraft-format v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/format)
-[1m[92m   Compiling[0m photocraft-paint v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/paint)
-[1m[92m   Compiling[0m photocraft-affinity v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/affinity)
-[1m[92m   Compiling[0m photocraft-io v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/io)
-[1m[92m   Compiling[0m photocraft-ui-egui v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/ui-egui)
-[1m[92m   Compiling[0m photocraft-plugins v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/plugins)
-[1m[92m   Compiling[0m photocraft-ops v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/ops)
-[1m[92m   Compiling[0m photocraft-ipp v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/ipp)
-[1m[92m   Compiling[0m photocraft-engine v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/engine)
-[1m[92m   Compiling[0m photocraft-gpu v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/gpu)
-[1m[33mwarning[0m[1m: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead[0m
-   [1m[94m--> [0mcrates/ui-egui/src/mobile.rs:136:27
+[1m[94m399[0m [91m- [0m                [91mtouch::[0mAction::DoubleTapUndo => {
+[1m[94m399[0m [92m+ [0m                Action::DoubleTapUndo => {
     [1m[94m|[0m
-[1m[94m136[0m [1m[94m|[0m             .id(egui::Id::new(("mobile-panel", g.key())))
-    [1m[94m|[0m                           [1m[33m^^^[0m
+
+[1m[91merror[E0433][0m[1m: cannot find module or crate `gallery` in this scope[0m
+   [1m[94m--> [0mcrates/ui-egui/src/app/frame.rs:408:9
+    [1m[94m|[0m
+[1m[94m408[0m [1m[94m|[0m         gallery::toast(self, ctx);
+    [1m[94m|[0m         [1m[91m^^^^^^^[0m [1m[91muse of unresolved module or unlinked crate `gallery`[0m
+    [1m[94m|[0m
+    [1m[94m= [0m[1mhelp[0m: if you wanted to use a crate named `gallery`, use `cargo add gallery` to add it to your `Cargo.toml`
+[1m[96mhelp[0m: consider importing this module
+    [1m[94m|[0m
+[1m[94m  1[0m [92m+ use crate::gallery;[0m
+    [1m[94m|[0m
+
+[1m[91merror[E0433][0m[1m: cannot find module or crate `touch` in this scope[0m
+   [1m[94m--> [0mcrates/ui-egui/src/app.rs:95:20
+    [1m[94m|[0m
+[1m[94m 95[0m [1m[94m|[0m             touch: touch::Touch::new(),
+    [1m[94m|[0m                    [1m[91m^^^^^[0m [1m[91muse of unresolved module or unlinked crate `touch`[0m
+    [1m[94m|[0m
+[1m[92mnote[0m: struct `crate::wheel_nav::Touch` exists but is inaccessible
+   [1m[94m--> [0mcrates/ui-egui/src/canvas/wheel_nav.rs:288:1
+    [1m[94m|[0m
+[1m[94m288[0m [1m[94m|[0m struct Touch {
+    [1m[94m|[0m [1m[92m^^^^^^^^^^^^[0m [1m[92mnot accessible[0m
+[1m[96mhelp[0m: to make use of source file crates/ui-egui/src/touch/mod.rs, use `mod touch` in this file to declare the module
+   [1m[94m--> [0mcrates/ui-egui/src/lib.rs:10:1
+    [1m[94m|[0m
+[1m[94m 10[0m [92m+ mod touch;[0m
+    [1m[94m|[0m
+[1m[96mhelp[0m: consider importing this struct
+    [1m[94m|[0m
+[1m[94m  1[0m [92m+ use crate::touch::Touch;[0m
+    [1m[94m|[0m
+[1m[96mhelp[0m: if you import `Touch`, refer to it directly
+    [1m[94m|[0m
+[1m[94m 95[0m [91m- [0m            touch: [91mtouch::[0mTouch::new(),
+[1m[94m 95[0m [92m+ [0m            touch: Touch::new(),
+    [1m[94m|[0m
+
+[1m[91merror[E0433][0m[1m: cannot find module or crate `mobile` in this scope[0m
+   [1m[94m--> [0mcrates/ui-egui/src/app.rs:96:21
+    [1m[94m|[0m
+[1m[94m 96[0m [1m[94m|[0m             mobile: mobile::State::default(),
+    [1m[94m|[0m                     [1m[91m^^^^^^[0m [1m[91muse of unresolved module or unlinked crate `mobile`[0m
+    [1m[94m|[0m
+[1m[92mnote[0m: these structs exist but are inaccessible
+   [1m[94m--> [0mcrates/ui-egui/src/widgets/text_field_menu.rs:67:1
+    [1m[94m|[0m
+[1m[94m 67[0m [1m[94m|[0m struct State {
+    [1m[94m|[0m [1m[92m^^^^^^^^^^^^[0m [1m[92m`crate::text_field_menu::State`: not accessible[0m
+    [1m[94m|[0m
+   [1m[94m::: [0mcrates/ui-egui/src/tools/transform_fx.rs:366:1
+    [1m[94m|[0m
+[1m[94m366[0m [1m[94m|[0m struct State {
+    [1m[94m|[0m [1m[92m^^^^^^^^^^^^[0m [1m[92m`crate::transform_fx::State`: not accessible[0m
+[1m[96mhelp[0m: to make use of source file crates/ui-egui/src/mobile.rs, use `mod mobile` in this file to declare the module
+   [1m[94m--> [0mcrates/ui-egui/src/lib.rs:10:1
+    [1m[94m|[0m
+[1m[94m 10[0m [92m+ mod mobile;[0m
+    [1m[94m|[0m
+[1m[96mhelp[0m: consider importing one of these structs
+    [1m[94m|[0m
+[1m[94m  1[0m [92m+ use crate::mobile::State;[0m
+    [1m[94m|[0m
+[1m[94m  1[0m [92m+ use crate::monitor_status::State;[0m
+    [1m[94m|[0m
+[1m[96mhelp[0m: if you import `State`, refer to it directly
+    [1m[94m|[0m
+[1m[94m 96[0m [91m- [0m            mobile: [91mmobile::[0mState::default(),
+[1m[94m 96[0m [92m+ [0m            mobile: State::default(),
+    [1m[94m|[0m
+
+[1m[91merror[E0433][0m[1m: cannot find module or crate `gallery` in this scope[0m
+  [1m[94m--> [0mcrates/ui-egui/src/app.rs:97:22
+   [1m[94m|[0m
+[1m[94m97[0m [1m[94m|[0m             gallery: gallery::Gallery::default(),
+   [1m[94m|[0m                      [1m[91m^^^^^^^[0m [1m[91muse of unresolved module or unlinked crate `gallery`[0m
+   [1m[94m|[0m
+[1m[96mhelp[0m: to make use of source file crates/ui-egui/src/gallery.rs, use `mod gallery` in this file to declare the module
+  [1m[94m--> [0mcrates/ui-egui/src/lib.rs:10:1
+   [1m[94m|[0m
+[1m[94m10[0m [92m+ mod gallery;[0m
+   [1m[94m|[0m
+[1m[96mhelp[0m: consider importing this struct
+   [1m[94m|[0m
+[1m[94m 1[0m [92m+ use crate::gallery::Gallery;[0m
+   [1m[94m|[0m
+[1m[96mhelp[0m: if you import `Gallery`, refer to it directly
+   [1m[94m|[0m
+[1m[94m97[0m [91m- [0m            gallery: [91mgallery::[0mGallery::default(),
+[1m[94m97[0m [92m+ [0m            gallery: Gallery::default(),
+   [1m[94m|[0m
+
+[1m[33mwarning[0m[1m: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead[0m
+   [1m[94m--> [0mcrates/ui-egui/src/gallery.rs:278:31
+    [1m[94m|[0m
+[1m[94m278[0m [1m[94m|[0m     egui::Area::new(egui::Id::new("gallery-toast")).anchor(Align2::CENTER_BOTTOM, [0.0, -88.0]).interactable(false).order(egui::Ord[1m[94m...[0m
+    [1m[94m|[0m                               [1m[33m^^^[0m
     [1m[94m|[0m
     [1m[94m= [0m[1mnote[0m: `#[warn(deprecated)]` on by default
+
+[1m[33mwarning[0m[1m: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead[0m
+   [1m[94m--> [0mcrates/ui-egui/src/mobile.rs:143:27
+    [1m[94m|[0m
+[1m[94m143[0m [1m[94m|[0m             .id(egui::Id::new(("mobile-panel", g.key())))
+    [1m[94m|[0m                           [1m[33m^^^[0m
 
 [1m[33mwarning[0m[1m: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead[0m
    [1m[94m--> [0mcrates/ui-egui/src/touch/mod.rs:360:50
@@ -59,18 +116,7 @@
 [1m[94m360[0m [1m[94m|[0m         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
     [1m[94m|[0m                                                  [1m[33m^^^[0m
 
-[1m[33mwarning[0m[1m: variant `Scrolling` is never constructed[0m
-   [1m[94m--> [0mcrates/ui-egui/src/touch/gesture.rs:115:5
-    [1m[94m|[0m
-[1m[94m104[0m [1m[94m|[0m enum Mode {
-    [1m[94m|[0m      [1m[94m----[0m [1m[94mvariant in this enum[0m
-[1m[94m...[0m
-[1m[94m115[0m [1m[94m|[0m     Scrolling {
-    [1m[94m|[0m     [1m[33m^^^^^^^^^[0m
-    [1m[94m|[0m
-    [1m[94m= [0m[1mnote[0m: `Mode` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
-    [1m[94m= [0m[1mnote[0m: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
-
+[1mFor more information about this error, try `rustc --explain E0433`.[0m
 [1m[33mwarning[0m: `photocraft-ui-egui` (lib) generated 3 warnings
-[1m[92m   Compiling[0m photocreate-ios v0.16.0 (/Users/runner/work/photocreate/photocreate/apps/photocreate-ios)
-[1m[92m    Finished[0m `release` profile [optimized] target(s) in 12m 57s
+[1m[91merror[0m: could not compile `photocraft-ui-egui` (lib) due to 13 previous errors; 3 warnings emitted
+[1m[33mwarning[0m: build failed, waiting for other jobs to finish...
