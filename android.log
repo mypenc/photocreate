@@ -1,207 +1,71 @@
-115:error[E0433]: cannot find module or crate `mobile` in this scope
-116-   --> crates/ui-egui/src/app/frame.rs:223:20
-117-    |
-118-223 |         if mode != mobile::Mode::Desktop && chrome {
-119-    |                    ^^^^^^ use of unresolved module or unlinked crate `mobile`
-120-    |
-121-    = help: if you wanted to use a crate named `mobile`, use `cargo add mobile` to add it to your `Cargo.toml`
-122-note: enum `crate::touch::gesture::Mode` exists but is inaccessible
-123-   --> crates/ui-egui/src/touch/gesture.rs:104:1
-124-    |
-125-104 | enum Mode {
-126-    | ^^^^^^^^^ not accessible
-127-help: consider importing one of these enums
-128-    |
-129-  1 + use crate::mobile::Mode;
+56:error[E0433]: cannot find module or crate `touch` in this scope
+57-   --> crates/ui-egui/src/app.rs:95:20
+58-    |
+59- 95 |             touch: touch::Touch::new(),
+60-    |                    ^^^^^ use of unresolved module or unlinked crate `touch`
+61-    |
+62-note: struct `crate::wheel_nav::Touch` exists but is inaccessible
+63-   --> crates/ui-egui/src/canvas/wheel_nav.rs:288:1
+64-    |
+65-288 | struct Touch {
+66-    | ^^^^^^^^^^^^ not accessible
+67-help: to make use of source file crates/ui-egui/src/touch/mod.rs, use `mod touch` in this file to declare the module
+68-   --> crates/ui-egui/src/lib.rs:10:1
+69-    |
+70- 10 + mod touch;
 --
-139:error[E0433]: cannot find module or crate `mobile` in this scope
-140-   --> crates/ui-egui/src/app/frame.rs:225:13
-141-    |
-142-225 |             mobile::menu_row(self, ui);
-143-    |             ^^^^^^ use of unresolved module or unlinked crate `mobile`
-144-    |
-145-    = help: if you wanted to use a crate named `mobile`, use `cargo add mobile` to add it to your `Cargo.toml`
-146-help: consider importing this module
-147-    |
-148-  1 + use crate::mobile;
-149-    |
-150-
-151:error[E0433]: cannot find module or crate `mobile` in this scope
-152-   --> crates/ui-egui/src/app/frame.rs:233:17
-153-    |
-154-233 |                 mobile::bottom_bar(self, ui, mode);
-155-    |                 ^^^^^^ use of unresolved module or unlinked crate `mobile`
-156-    |
-157-    = help: if you wanted to use a crate named `mobile`, use `cargo add mobile` to add it to your `Cargo.toml`
-158-help: consider importing this module
-159-    |
-160-  1 + use crate::mobile;
-161-    |
-162-
-163:error[E0433]: cannot find module or crate `gallery` in this scope
-164-   --> crates/ui-egui/src/app/frame.rs:237:21
-165-    |
-166-237 |                     gallery::show(self, ui);
-167-    |                     ^^^^^^^ use of unresolved module or unlinked crate `gallery`
-168-    |
-169-    = help: if you wanted to use a crate named `gallery`, use `cargo add gallery` to add it to your `Cargo.toml`
-170-help: consider importing this module
-171-    |
-172-  1 + use crate::gallery;
-173-    |
-174-
-175:error[E0433]: cannot find module or crate `mobile` in this scope
-176-   --> crates/ui-egui/src/app/frame.rs:246:17
-177-    |
-178-246 |                 mobile::floating_panels(self, &ctx, mode);
-179-    |                 ^^^^^^ use of unresolved module or unlinked crate `mobile`
-180-    |
-181-    = help: if you wanted to use a crate named `mobile`, use `cargo add mobile` to add it to your `Cargo.toml`
-182-help: consider importing this module
-183-    |
-184-  1 + use crate::mobile;
-185-    |
-186-
-187:error[E0433]: cannot find module or crate `mobile` in this scope
-188-   --> crates/ui-egui/src/app/frame.rs:248:13
-189-    |
-190-248 |             mobile::tools_window(self, &ctx, mode);
-191-    |             ^^^^^^ use of unresolved module or unlinked crate `mobile`
-192-    |
-193-    = help: if you wanted to use a crate named `mobile`, use `cargo add mobile` to add it to your `Cargo.toml`
-194-help: consider importing this module
-195-    |
-196-  1 + use crate::mobile;
-197-    |
-198-
-199:error[E0433]: cannot find module or crate `touch` in this scope
-200-   --> crates/ui-egui/src/app/frame.rs:393:17
-201-    |
-202-393 |                 touch::Action::Undo => {
-203-    |                 ^^^^^ use of unresolved module or unlinked crate `touch`
-204-    |
-205-    = help: if you wanted to use a crate named `touch`, use `cargo add touch` to add it to your `Cargo.toml`
-206-help: consider importing one of these enums
-207-    |
-208-  1 + use crate::brushes_tab::Action;
-209-    |
-210-  1 + use crate::text_field_menu::Action;
-211-    |
-212-  1 + use crate::touch::Action;
-213-    |
+82:error[E0433]: cannot find module or crate `mobile` in this scope
+83-   --> crates/ui-egui/src/app.rs:96:21
+84-    |
+85- 96 |             mobile: mobile::State::default(),
+86-    |                     ^^^^^^ use of unresolved module or unlinked crate `mobile`
+87-    |
+88-note: these structs exist but are inaccessible
+89-   --> crates/ui-egui/src/widgets/text_field_menu.rs:67:1
+90-    |
+91- 67 | struct State {
+92-    | ^^^^^^^^^^^^ `crate::text_field_menu::State`: not accessible
+93-    |
+94-   ::: crates/ui-egui/src/tools/transform_fx.rs:366:1
+95-    |
+96-366 | struct State {
 --
-220:error[E0433]: cannot find module or crate `touch` in this scope
-221-   --> crates/ui-egui/src/app/frame.rs:396:17
-222-    |
-223-396 |                 touch::Action::Redo => {
-224-    |                 ^^^^^ use of unresolved module or unlinked crate `touch`
-225-    |
-226-    = help: if you wanted to use a crate named `touch`, use `cargo add touch` to add it to your `Cargo.toml`
-227-help: consider importing one of these enums
-228-    |
-229-  1 + use crate::brushes_tab::Action;
-230-    |
-231-  1 + use crate::text_field_menu::Action;
-232-    |
-233-  1 + use crate::touch::Action;
-234-    |
+115:error[E0433]: cannot find module or crate `gallery` in this scope
+116-  --> crates/ui-egui/src/app.rs:97:22
+117-   |
+118-97 |             gallery: gallery::Gallery::default(),
+119-   |                      ^^^^^^^ use of unresolved module or unlinked crate `gallery`
+120-   |
+121-help: to make use of source file crates/ui-egui/src/gallery.rs, use `mod gallery` in this file to declare the module
+122-  --> crates/ui-egui/src/lib.rs:10:1
+123-   |
+124-10 + mod gallery;
+125-   |
+126-help: consider importing this struct
+127-   |
+128- 1 + use crate::gallery::Gallery;
+129-   |
 --
-241:error[E0433]: cannot find module or crate `touch` in this scope
-242-   --> crates/ui-egui/src/app/frame.rs:399:17
-243-    |
-244-399 |                 touch::Action::DoubleTapUndo => {
-245-    |                 ^^^^^ use of unresolved module or unlinked crate `touch`
-246-    |
-247-    = help: if you wanted to use a crate named `touch`, use `cargo add touch` to add it to your `Cargo.toml`
-248-help: consider importing one of these enums
-249-    |
-250-  1 + use crate::brushes_tab::Action;
-251-    |
-252-  1 + use crate::text_field_menu::Action;
-253-    |
-254-  1 + use crate::touch::Action;
-255-    |
---
-262:error[E0433]: cannot find module or crate `gallery` in this scope
-263-   --> crates/ui-egui/src/app/frame.rs:408:9
-264-    |
-265-408 |         gallery::toast(self, ctx);
-266-    |         ^^^^^^^ use of unresolved module or unlinked crate `gallery`
-267-    |
-268-    = help: if you wanted to use a crate named `gallery`, use `cargo add gallery` to add it to your `Cargo.toml`
-269-help: consider importing this module
-270-    |
-271-  1 + use crate::gallery;
-272-    |
-273-
-274:error[E0433]: cannot find module or crate `touch` in this scope
-275-   --> crates/ui-egui/src/app.rs:95:20
-276-    |
-277- 95 |             touch: touch::Touch::new(),
-278-    |                    ^^^^^ use of unresolved module or unlinked crate `touch`
-279-    |
-280-note: struct `crate::wheel_nav::Touch` exists but is inaccessible
-281-   --> crates/ui-egui/src/canvas/wheel_nav.rs:288:1
-282-    |
-283-288 | struct Touch {
-284-    | ^^^^^^^^^^^^ not accessible
-285-help: to make use of source file crates/ui-egui/src/touch/mod.rs, use `mod touch` in this file to declare the module
-286-   --> crates/ui-egui/src/lib.rs:10:1
-287-    |
-288- 10 + mod touch;
---
-300:error[E0433]: cannot find module or crate `mobile` in this scope
-301-   --> crates/ui-egui/src/app.rs:96:21
-302-    |
-303- 96 |             mobile: mobile::State::default(),
-304-    |                     ^^^^^^ use of unresolved module or unlinked crate `mobile`
-305-    |
-306-note: these structs exist but are inaccessible
-307-   --> crates/ui-egui/src/widgets/text_field_menu.rs:67:1
-308-    |
-309- 67 | struct State {
-310-    | ^^^^^^^^^^^^ `crate::text_field_menu::State`: not accessible
-311-    |
-312-   ::: crates/ui-egui/src/tools/transform_fx.rs:366:1
-313-    |
-314-366 | struct State {
---
-333:error[E0433]: cannot find module or crate `gallery` in this scope
-334-  --> crates/ui-egui/src/app.rs:97:22
-335-   |
-336-97 |             gallery: gallery::Gallery::default(),
-337-   |                      ^^^^^^^ use of unresolved module or unlinked crate `gallery`
-338-   |
-339-help: to make use of source file crates/ui-egui/src/gallery.rs, use `mod gallery` in this file to declare the module
-340-  --> crates/ui-egui/src/lib.rs:10:1
-341-   |
-342-10 + mod gallery;
-343-   |
-344-help: consider importing this struct
-345-   |
-346- 1 + use crate::gallery::Gallery;
-347-   |
---
-376:error: could not compile `photocraft-ui-egui` (lib) due to 13 previous errors; 3 warnings emitted
-377-warning: build failed, waiting for other jobs to finish...
-378-note: If the build failed due to a missing target, you can run this command:
-379-note: 
-380-note:     rustup target install aarch64-linux-android
+158:error: could not compile `photocraft-ui-egui` (lib) due to 3 previous errors; 3 warnings emitted
+159-warning: build failed, waiting for other jobs to finish...
+160-note: If the build failed due to a missing target, you can run this command:
+161-note: 
+162-note:     rustup target install aarch64-linux-android
 
 ==== TAIL ====
-
-error[E0433]: cannot find module or crate `gallery` in this scope
-   --> crates/ui-egui/src/app/frame.rs:408:9
-    |
-408 |         gallery::toast(self, ctx);
-    |         ^^^^^^^ use of unresolved module or unlinked crate `gallery`
-    |
-    = help: if you wanted to use a crate named `gallery`, use `cargo add gallery` to add it to your `Cargo.toml`
-help: consider importing this module
-    |
-  1 + use crate::gallery;
-    |
-
+   Compiling photocraft-raw v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raw)
+   Compiling accesskit_winit v0.34.1
+   Compiling photocraft-affinity v0.16.0 (/home/runner/work/photocreate/photocreate/crates/affinity)
+   Compiling photocraft-ui-egui v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ui-egui)
+   Compiling photocraft-io v0.16.0 (/home/runner/work/photocreate/photocreate/crates/io)
+   Compiling egui-winit v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling photocraft-plugins v0.16.0 (/home/runner/work/photocreate/photocreate/crates/plugins)
+   Compiling egui-wgpu v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling photocraft-ops v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ops)
+   Compiling photocraft-ipp v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ipp)
+   Compiling photocraft-engine v0.16.0 (/home/runner/work/photocreate/photocreate/crates/engine)
+   Compiling eframe v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling photocraft-gpu v0.16.0 (/home/runner/work/photocreate/photocreate/crates/gpu)
 error[E0433]: cannot find module or crate `touch` in this scope
    --> crates/ui-egui/src/app.rs:95:20
     |
@@ -304,7 +168,7 @@ warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique`
 
 For more information about this error, try `rustc --explain E0433`.
 warning: `photocraft-ui-egui` (lib) generated 3 warnings
-error: could not compile `photocraft-ui-egui` (lib) due to 13 previous errors; 3 warnings emitted
+error: could not compile `photocraft-ui-egui` (lib) due to 3 previous errors; 3 warnings emitted
 warning: build failed, waiting for other jobs to finish...
 note: If the build failed due to a missing target, you can run this command:
 note: 
