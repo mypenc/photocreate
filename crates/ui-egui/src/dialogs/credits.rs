@@ -277,7 +277,7 @@ fn contributors_in(app: &mut PhotocraftApp, ui: &mut egui::Ui, contributors: &[C
         });
         press.after(&sort.response);
         let _ = sort.response.accessible_name(tl!("Sort"));
-        if ui.button(if v.ascending { "▲" } else { "▼" }).on_hover_text(tl!("Reverse the order")).clicked() {
+        if ui.button(if v.ascending { "^" } else { "v" }).on_hover_text(tl!("Reverse the order")).clicked() {
             v.ascending = !v.ascending;
         }
         ui.separator();

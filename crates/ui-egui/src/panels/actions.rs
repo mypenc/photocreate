@@ -955,7 +955,7 @@ pub fn panel(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     }
     egui::ScrollArea::vertical().id_salt("actions-rows").max_height(max_h).min_scrolled_height(max_h).auto_shrink([false, false]).show(ui, |ui| {
         if rows.is_empty() {
-            ui.label(egui::RichText::new(tl!("Record ● a sequence of edits, then play ▶ it on any document.")).color(t.text_faint).size(11.5));
+            ui.label(egui::RichText::new(tl!("Record a sequence of edits, then play it on any document.")).color(t.text_faint).size(11.5));
         }
         scroll_actions_during_drag(ui);
         let mut shown_set: Option<&str> = None;

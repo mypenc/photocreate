@@ -25,7 +25,6 @@ mod icon_data;
 pub mod gallery;
 pub mod icons;
 pub mod mobile;
-pub mod timelapse;
 pub mod touch;
 pub mod jobs_ui;
 pub(crate) mod last_brush;
@@ -441,10 +440,8 @@ pub struct PhotocraftApp {
     pub touch: touch::Touch,
     /// Phone / tablet layout state; see [`mobile`].
     pub mobile: mobile::State,
-    /// Albums, artwork names and timelapse playback; see [`gallery`].
+    /// The start screen listing saved artworks; see [`gallery`].
     pub gallery: gallery::Gallery,
-    /// Records a timelapse frame after edits; see [`timelapse`].
-    pub timelapse: timelapse::Recorder,
     /// Window › Arrange: the first document of the shown run of tiles, when there are more
     /// documents than tiles (`canvas::arranged_cells`).
     pub(crate) arrange_start: usize,

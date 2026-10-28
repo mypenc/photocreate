@@ -126,12 +126,19 @@ pub fn floating_panels(app: &mut PhotocraftApp, ctx: &egui::Context, mode: Mode)
     let screen = ctx.content_rect();
     let width = if mode == Mode::Phone { (screen.width() - 16.0).clamp(240.0, 380.0) } else { 360.0 };
     let height = (screen.height() * if mode == Mode::Phone { 0.5 } else { 0.62 }).clamp(220.0, 560.0);
+    // Layers is a small window on its own, not the whole side panel.
+    let layers_width = width.min(300.0);
+    let layers_height = (screen.height() * 0.45).clamp(200.0, 420.0);
     let pro = crate::theme::Tokens::get(ctx).pro;
     let mut close: Option<Group> = None;
     let mut raise: Option<Group> = None;
     let open = app.mobile.open.clone();
     for (n, g) in open.iter().copied().enumerate() {
-        let pos = if mode == Mode::Phone { egui::pos2(8.0, screen.top() + 96.0 + 14.0 * n as f32) } else { egui::pos2(screen.right() - width - 12.0, screen.top() + 96.0 + 28.0 * n as f32) };
+        let layers = g == Group::Layers;
+        let (width, height) = if layers { (layers_width, layers_height) } else { (width, height) };
+        let pos = if layers {
+            egui::pos2(screen.right() - width - 8.0, screen.top() + 96.0)
+        } else if mode == Mode::Phone { egui::pos2(8.0, screen.top() + 96.0 + 14.0 * n as f32) } else { egui::pos2(screen.right() - width - 12.0, screen.top() + 96.0 + 28.0 * n as f32) };
         let resp = egui::Window::new(group_title(g))
             .id(egui::Id::new(("mobile-panel", g.key())))
             .title_bar(false)
@@ -145,17 +152,25 @@ pub fn floating_panels(app: &mut PhotocraftApp, ctx: &egui::Context, mode: Mode)
                 ui.horizontal(|ui| {
                     // The title row is the handle: drag it to move the panel.
                     let tabs = app.ui.dock.visible_tabs(g, pro);
+                    let only_layers = layers && tabs.iter().any(|(_, n)| *n == "Layers");
+                    if only_layers && let Some((i, _)) = tabs.iter().find(|(_, n)| *n == "Layers") {
+                        // Only the layer list: the panel's other tabs stay in the Window menu.
+                        *g.tab_mut(&mut app.ui.dock_tabs) = *i;
+                        ui.heading("Layers");
+                    }
                     let sel = *g.tab_mut(&mut app.ui.dock_tabs);
                     let mut pick = None;
-                    egui::ScrollArea::horizontal().id_salt(("mobile-tabs", g.key())).max_width(ui.available_width() - 52.0).scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden).show(ui, |ui| {
-                        ui.horizontal(|ui| {
-                            for (i, name) in &tabs {
-                                if ui.add(egui::Button::new(crate::i18n::tr(crate::i18n::current(), name)).min_size(egui::vec2(0.0, 36.0)).selected(*i == sel)).clicked() {
-                                    pick = Some(*i);
+                    if !only_layers {
+                        egui::ScrollArea::horizontal().id_salt(("mobile-tabs", g.key())).max_width(ui.available_width() - 52.0).scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden).show(ui, |ui| {
+                            ui.horizontal(|ui| {
+                                for (i, name) in &tabs {
+                                    if ui.add(egui::Button::new(crate::i18n::tr(crate::i18n::current(), name)).min_size(egui::vec2(0.0, 36.0)).selected(*i == sel)).clicked() {
+                                        pick = Some(*i);
+                                    }
                                 }
-                            }
+                            });
                         });
-                    });
+                    }
                     if let Some(i) = pick {
                         *g.tab_mut(&mut app.ui.dock_tabs) = i;
                     }
@@ -237,8 +252,15 @@ pub fn bottom_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui, mode: Mode) {
             ui.horizontal_centered(|ui| {
                 ui.spacing_mut().item_spacing.x = 6.0;
                 if icons::button(ui, "folder", size, app.gallery.open, "Gallery").clicked() {
+                    if !app.gallery.open {
+                        // Never leave the canvas with unsaved work.
+                        crate::gallery::save_if_changed(app);
+                    }
                     app.gallery.open = !app.gallery.open;
                     app.gallery.refresh();
+                }
+                if icons::button(ui, "save", size, false, "Save").clicked() {
+                    let _ = crate::gallery::save_active(app, false);
                 }
                 ui.separator();
                 // Pen and eraser.

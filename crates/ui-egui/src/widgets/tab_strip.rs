@@ -51,7 +51,7 @@ pub fn overflow_button(ui: &mut Ui, id: egui::Id, r: Rect, tip: &str, labels: &[
         ui.set_min_width(140.0);
         for &i in overflow {
             let Some(name) = labels.get(i) else { continue };
-            let text = if checked.is_some() { format!("{} {name}", if checked == Some(i) { "✔" } else { "  " }) } else { (*name).to_owned() };
+            let text = if checked.is_some() { format!("{} {name}", if checked == Some(i) { "*" } else { "  " }) } else { (*name).to_owned() };
             if ui.button(text).clicked() {
                 *picked = Some(i);
                 ui.close();

@@ -7,8 +7,7 @@ val repoRoot = rootDir.parentFile
 val workspaceVersion: String =
     Regex("""(?m)^version\s*=\s*"([^"]+)"""").find(File(repoRoot, "Cargo.toml").readText())?.groupValues?.get(1) ?: "0.0.0"
 
-// The launcher icon is copied from the repository icon set into src/main/res/mipmap-xxxhdpi by
-// android/scripts/build.sh (git-ignored), so Gradle needs no custom task for it.
+// The launcher icons (adaptive, full-bleed) are committed under src/main/res/mipmap-*.
 
 android {
     namespace = "ai.storyteller.photocreate"

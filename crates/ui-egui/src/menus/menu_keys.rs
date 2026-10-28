@@ -200,7 +200,7 @@ pub fn mnemonic_text(ui: &Ui, prefix: &str, label: &str, mnemonic: Option<char>,
 }
 
 /// The checkmark menu rows draw in their gutter.
-pub const CHECK_MARK: &str = "✔ ";
+pub const CHECK_MARK: &str = "* ";
 
 /// Width of the checkmark column every menu row reserves (#5705): the width of [`CHECK_MARK`] in
 /// the button font, so checked, unchecked and plain rows (and submenu headers) all start their

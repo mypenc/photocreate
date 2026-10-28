@@ -335,7 +335,7 @@ pub fn options_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
         }
     }
     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-        if crate::widgets::primary_button(ui, "✓", 32.0)
+        if crate::widgets::primary_button(ui, "OK", 32.0)
             .on_hover_text(crate::i18n::fmt(tl!("Commit Perspective Warp ({key})"), &[("key", &crate::shortcuts::pretty("Enter"))]))
             .clicked()
         {

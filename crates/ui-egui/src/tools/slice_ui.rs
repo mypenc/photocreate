@@ -284,7 +284,7 @@ pub fn draw_overlay(app: &PhotocraftApp, painter: &egui::Painter, xf: &ViewXform
             }
             if numbers && sr.width() > 18.0 && sr.height() > 12.0 {
                 let label = match r.origin {
-                    SliceOrigin::Layer => format!("{:02} ▪", r.number),
+                    SliceOrigin::Layer => format!("{:02} *", r.number),
                     _ => format!("{:02}", r.number),
                 };
                 let font = egui::FontId::proportional(10.0);

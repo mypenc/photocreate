@@ -354,12 +354,12 @@ fn panel_menu_picks_the_mode_and_ramp() {
     );
     PhotocraftApp::setup_context(&h.ctx, ThemeKind::AdwaitaDark);
     h.run_steps(2);
-    assert!(h.query_by_label("✔ Hue Cube").is_some(), "Hue Cube is the default");
+    assert!(h.query_by_label("* Hue Cube").is_some(), "Hue Cube is the default");
     for mode in ColorPanelMode::ALL.into_iter().skip(1).chain([ColorPanelMode::HueCube, ColorPanelMode::WebColorSliders]) {
         h.get_by_label(&format!("   {}", mode.label())).click();
         h.run_steps(2);
         assert_eq!(h.state().ui.color_panel.mode, mode);
-        assert!(h.query_by_label(&format!("✔ {}", mode.label())).is_some());
+        assert!(h.query_by_label(&format!("* {}", mode.label())).is_some());
     }
     h.get_by_label("   Current Colors").click();
     h.run_steps(2);

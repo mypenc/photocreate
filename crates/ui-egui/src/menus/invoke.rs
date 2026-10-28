@@ -214,6 +214,11 @@ fn invoke_file_commands(app: &mut PhotocraftApp, ctx: &egui::Context, id: &str, 
         "file.import.videoFramesToLayers" if params.get("path").and_then(Value::as_str).is_none() => {
             app.ask_folder(|app, path| app.run("file.import.videoFramesToLayers", json!({"path": path})).map_err(|e| e.to_string()))
         }
+        // Phone and tablet layout: no file dialogs. Save writes the artwork into the gallery
+        // folder and updates its thumbnail; Save As keeps the original and saves a copy.
+        "file.save" | "file.saveAs" if params.get("path").is_none() && app.mobile_mode(ctx) != crate::mobile::Mode::Desktop => {
+            crate::gallery::save_active(app, id == "file.saveAs").map(|p| json!({"path": p.to_string_lossy(), "warnings": []}))
+        }
         "file.save" => {
             // Writes back only to a layered file that holds the whole document; anything else
             // goes through Save As, so the original is never overwritten with less (#3806).

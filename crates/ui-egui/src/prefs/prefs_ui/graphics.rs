@@ -63,7 +63,7 @@ fn graphics_adapter_row(ui: &mut egui::Ui, adapters: Option<&Value>, obj: &mut M
         names.push(current.clone());
     }
     let automatic = tl!("Automatic");
-    let labels: Vec<String> = names.iter().map(|n| if missing && *n == current { format!("⚠ {n}") } else { n.clone() }).collect();
+    let labels: Vec<String> = names.iter().map(|n| if missing && *n == current { format!("(!) {n}") } else { n.clone() }).collect();
     let mut pairs: Vec<(String, &str)> = vec![(String::new(), automatic)];
     pairs.extend(names.iter().cloned().zip(labels.iter().map(String::as_str)));
     ui.horizontal(|ui| {

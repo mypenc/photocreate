@@ -462,7 +462,7 @@ fn right_clicking_w_or_h_picks_their_unit_and_remembers_it() {
     // H opens the same menu, with the current unit checked.
     h.get_all_by_role(egui::accesskit::Role::SpinButton).nth(3).unwrap().click_secondary();
     h.run_steps(2);
-    assert!(h.query_by_label("✓ Inches").is_some(), "the current unit is checked");
+    assert!(h.query_by_label("* Inches").is_some(), "the current unit is checked");
     h.get_by_label("Percent").click();
     h.run_steps(3);
     assert_eq!(shown_size(&h), ["100", "100"]);

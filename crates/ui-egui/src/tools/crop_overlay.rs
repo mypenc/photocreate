@@ -288,7 +288,7 @@ pub fn options_button(o: &mut ToolOptions, ui: &mut egui::Ui) {
     egui::Popup::menu(&r).show(|ui| {
         ui.set_min_width(220.0);
         let item = |ui: &mut egui::Ui, on: bool, label: &str, key: Option<&str>| {
-            let mut b = egui::Button::new(format!("{} {}", if on { "✔" } else { "  " }, label));
+            let mut b = egui::Button::new(format!("{} {}", if on { "*" } else { "  " }, label));
             if let Some(k) = key {
                 b = b.shortcut_text(crate::shortcuts::pretty(k));
             }

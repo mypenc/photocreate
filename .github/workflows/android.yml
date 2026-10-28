@@ -98,24 +98,22 @@ jobs:
           KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KS_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           set -euo pipefail
+          if [ -z "${KS_B64:-}" ] || [ -z "${KS_PASS:-}" ] || [ -z "${KS_ALIAS:-}" ]; then
+            echo "::error::Add the repository secrets ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS and ANDROID_KEY_PASSWORD (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
           BT="$ANDROID_SDK_ROOT/build-tools/35.0.0"
           UNSIGNED=$(find android/app/build/outputs/apk/release -name '*.apk' | head -n1)
           echo "Unsigned APK: $UNSIGNED"
-          if [ -n "${KS_B64:-}" ]; then
-            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
-          else
-            echo "::warning::No keystore secrets set; signing with a throwaway key. Each build gets a different signature, so uninstall the old app before installing a new build."
-            KS_PASS=android; KS_ALIAS=photocreate
-            keytool -genkeypair -keystore "$RUNNER_TEMP/release.jks" -alias "$KS_ALIAS" \
-              -keyalg RSA -keysize 2048 -validity 10000 \
-              -storepass "$KS_PASS" -keypass "$KS_PASS" -dname "CN=PhotoCreate"
-          fi
+          echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
           "$BT/zipalign" -f -p 4 "$UNSIGNED" "$RUNNER_TEMP/aligned.apk"
           OUT=android/app/build/outputs/apk/release/photocreate-arm64-signed.apk
           "$BT/apksigner" sign --ks "$RUNNER_TEMP/release.jks" --ks-key-alias "$KS_ALIAS" \
-            --ks-pass "pass:$KS_PASS" --out "$OUT" "$RUNNER_TEMP/aligned.apk"
+            --ks-pass "pass:$KS_PASS" --key-pass "pass:${KEY_PASS:-$KS_PASS}" --out "$OUT" "$RUNNER_TEMP/aligned.apk"
+          rm -f "$RUNNER_TEMP/release.jks"
           "$BT/apksigner" verify --verbose "$OUT"
           echo "path=$OUT" >> "$GITHUB_OUTPUT"
           ls -lh "$OUT"

@@ -572,7 +572,7 @@ fn item(ui: &mut egui::Ui, actions: &mut Vec<(String, Value)>, label: &str, cmd:
 /// Channel Options › Color Indicates.
 fn indicates_items(ui: &mut egui::Ui, actions: &mut Vec<(String, Value)>, channel: Value, current: ColorIndicates) {
     let masked = current == ColorIndicates::MaskedAreas;
-    let check = |on: bool, s: &str| if on { format!("✓ {s}") } else { s.to_string() };
+    let check = |on: bool, s: &str| if on { format!("* {s}") } else { s.to_string() };
     item(ui, actions, &check(masked, "Color Indicates Masked Areas"), "channel.options", json!({ "channel": channel.clone(), "indicates": "masked" }));
     item(ui, actions, &check(!masked, "Color Indicates Selected Areas"), "channel.options", json!({ "channel": channel, "indicates": "selected" }));
 }

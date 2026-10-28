@@ -12,6 +12,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="PhotoCreate"
         android:largeHeap="true"
         android:theme="@style/Theme.PhotoCreate">

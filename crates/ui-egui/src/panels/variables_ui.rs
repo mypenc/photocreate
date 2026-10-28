@@ -253,7 +253,7 @@ fn data_sets_page(ui: &mut egui::Ui, _t: &Tokens, state: &mut Value, fields: &mu
     let mut cur = data_set_index(fields, sets.len());
 
     ui.horizontal(|ui| {
-        if ui.button("◀").clicked() && cur > 0 {
+        if ui.button("<").clicked() && cur > 0 {
             cur -= 1;
         }
         let name = sets
@@ -272,7 +272,7 @@ fn data_sets_page(ui: &mut egui::Ui, _t: &Tokens, state: &mut Value, fields: &mu
                 &[("name", &name), ("index", &(if sets.is_empty() { 0 } else { cur + 1 }).to_string()), ("total", &sets.len().to_string())],
             )
         });
-        if ui.button("▶").clicked() && cur + 1 < sets.len() {
+        if ui.button(">").clicked() && cur + 1 < sets.len() {
             cur += 1;
         }
         if ui.button(tl!("New")).clicked() {

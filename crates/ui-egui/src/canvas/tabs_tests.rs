@@ -213,14 +213,14 @@ fn crowded_tabs_keep_their_whole_names_and_the_menu_lists_every_document() {
             h.run_steps(2);
             for (i, label) in labels.iter().enumerate() {
                 // The menu bar's padding: an unchecked row keeps the check mark's room, so names line up.
-                let (on, off) = (format!("✔ {label}"), format!("   {label}"));
+                let (on, off) = (format!("* {label}"), format!("   {label}"));
                 let (want, other) = if i == active { (&on, &off) } else { (&off, &on) };
                 assert_eq!(h.query_all_by_label(want).count(), 1, "{theme:?}, active {active}: document {i} is in the menu as {want:?}");
                 assert_eq!(h.query_all_by_label(other).count(), 0, "{theme:?}, active {active}: document {i} is not {other:?}");
             }
             h.key_press(egui::Key::Escape);
             h.run_steps(2);
-            assert!(h.query_by_label(&format!("✔ {}", labels[active])).is_none(), "{theme:?}: the menu closed");
+            assert!(h.query_by_label(&format!("* {}", labels[active])).is_none(), "{theme:?}: the menu closed");
         }
     }
 }

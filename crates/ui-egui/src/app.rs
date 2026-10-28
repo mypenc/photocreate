@@ -95,7 +95,6 @@ impl PhotocraftApp {
             touch: touch::Touch::new(),
             mobile: mobile::State::default(),
             gallery: gallery::Gallery::default(),
-            timelapse: timelapse::Recorder::new(),
             arrange_start: 0,
             ppp: 1.0,
             drop_canvas_rect: None,

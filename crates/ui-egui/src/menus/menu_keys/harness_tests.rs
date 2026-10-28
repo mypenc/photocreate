@@ -265,9 +265,9 @@ fn mnemonics_are_underlined_only_with_alt_or_a_keyboard_opened_menu() {
 fn underlined_text_marks_the_mnemonic_once_and_keeps_the_prefix() {
     let ctx = egui::Context::default();
     let mut out = ctx.run_ui(Default::default(), |ui| {
-        let t = crate::menu_keys::mnemonic_text(ui, "✔ ", "Save As…", Some('A'), None);
+        let t = crate::menu_keys::mnemonic_text(ui, "* ", "Save As…", Some('A'), None);
         let egui::WidgetText::LayoutJob(job) = t else { panic!("a mnemonic makes a layout job") };
-        assert_eq!(job.text, "✔ Save As…");
+        assert_eq!(job.text, "* Save As…");
         let underlined: Vec<&str> =
             job.sections.iter().filter(|s| s.format.underline != egui::Stroke::NONE).map(|s| &job.text[s.byte_range.start.0..s.byte_range.end.0]).collect();
         assert_eq!(underlined, ["a"], "the first occurrence, case-insensitively");
@@ -393,7 +393,7 @@ fn every_menu_row_starts_its_label_after_one_checkmark_column() {
         let underlined_mid = start(true, "Lock Guides", Some('G'));
         assert!((underlined_mid - plain).abs() < 0.01, "nor a mnemonic after the first letter");
         let t = crate::menu_keys::menu_row_text(ui, true, "Rulers", None);
-        assert_eq!(t.text(), "✔ Rulers", "a checked row keeps its mark (and its accessible label)");
+        assert_eq!(t.text(), "* Rulers", "a checked row keeps its mark (and its accessible label)");
     });
     out.textures_delta.clear();
 }

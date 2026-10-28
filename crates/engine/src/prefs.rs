@@ -421,7 +421,7 @@ impl Default for Tools {
             overscroll: true,
             double_click_layer_mask_launches_select_and_mask: true,
             right_click_with_painting_tools: RightClickPaint::BrushPicker,
-            use_tablet_pressure: true,
+            use_tablet_pressure: false,
             pressure_curve: vec![[0.0, 0.0], [1.0, 1.0]],
             bundle_nudges: true,
             nudge_bundle_pause_ms: 1000,

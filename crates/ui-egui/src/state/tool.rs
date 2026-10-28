@@ -292,22 +292,22 @@ impl Tool {
     /// Glyph drawn in the toolbar (vector icons come later).
     pub fn glyph(self) -> &'static str {
         match self {
-            Tool::Move => "✥",
-            Tool::RectMarquee => "⬚",
-            Tool::EllipseMarquee => "◌",
-            Tool::Brush => "🖌",
-            Tool::MixerBrush => "🖌",
-            Tool::Eraser => "⌫",
-            Tool::Eyedropper => "💧",
-            Tool::ColorSampler => "◎",
+            Tool::Move => "+",
+            Tool::RectMarquee => "[]",
+            Tool::EllipseMarquee => "()",
+            Tool::Brush => "B",
+            Tool::MixerBrush => "B",
+            Tool::Eraser => "E",
+            Tool::Eyedropper => "I",
+            Tool::ColorSampler => "o",
             Tool::Lasso | Tool::PolygonLasso | Tool::MagneticLasso => "L",
             Tool::MagicWand => "W",
             Tool::Crop => "C",
             Tool::Gradient | Tool::PaintBucket => "G",
             Tool::Type | Tool::VerticalType | Tool::HorizontalTypeMask | Tool::VerticalTypeMask => "T",
-            Tool::Hand => "✋",
-            Tool::RotateView => "🧭",
-            Tool::Zoom => "🔍",
+            Tool::Hand => "H",
+            Tool::RotateView => "R",
+            Tool::Zoom => "Z",
             _ => "•",
         }
     }

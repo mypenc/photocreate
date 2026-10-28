@@ -86,7 +86,7 @@ pub(crate) fn unit_menu_of(ui: &mut egui::Ui, current: Unit, units: &[Unit]) -> 
         ui.set_min_width(150.0);
         let mut chosen = None;
         for (label, name, checked) in unit_menu_items(current, units) {
-            let label = if checked { format!("✓ {label}") } else { label };
+            let label = if checked { format!("* {label}") } else { label };
             if ui.button(label).clicked() {
                 ui.close();
                 chosen = Some(name);

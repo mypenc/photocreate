@@ -727,7 +727,7 @@ pub(crate) fn hex_code(rgb: [f32; 3]) -> String {
 
 /// A panel menu row with Photoshop's check mark column.
 fn check_item(ui: &mut egui::Ui, on: bool, label: &str) -> bool {
-    ui.button(format!("{}{}", if on { "✔ " } else { "   " }, tl!(label))).clicked()
+    ui.button(format!("{}{}", if on { "* " } else { "   " }, tl!(label))).clicked()
 }
 
 /// The ramp choices and Make Ramp Web Safe (the panel menu's last section and the ramp's

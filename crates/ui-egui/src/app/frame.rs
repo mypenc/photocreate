@@ -383,7 +383,7 @@ impl PhotocraftApp {
 }
 
 impl PhotocraftApp {
-    /// Per-frame upkeep of the touch layer and the timelapse in the mobile layout.
+    /// Per-frame upkeep of the touch layer in the mobile layout.
     pub(crate) fn mobile_frame_end(&mut self, ctx: &egui::Context) {
         self.touch.apply_style(ctx);
         self.touch.show_bar(ctx);
@@ -405,11 +405,6 @@ impl PhotocraftApp {
                 }
             }
         }
-        let mut rec = std::mem::take(&mut self.timelapse);
-        let wrote = rec.tick(self, ctx);
-        self.timelapse = rec;
-        if wrote {
-            self.gallery.refresh();
-        }
+        gallery::toast(self, ctx);
     }
 }
