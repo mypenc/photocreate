@@ -1,175 +1,137 @@
-56:error[E0433]: cannot find module or crate `touch` in this scope
-57-   --> crates/ui-egui/src/app.rs:95:20
-58-    |
-59- 95 |             touch: touch::Touch::new(),
-60-    |                    ^^^^^ use of unresolved module or unlinked crate `touch`
-61-    |
-62-note: struct `crate::wheel_nav::Touch` exists but is inaccessible
-63-   --> crates/ui-egui/src/canvas/wheel_nav.rs:288:1
-64-    |
-65-288 | struct Touch {
-66-    | ^^^^^^^^^^^^ not accessible
-67-help: to make use of source file crates/ui-egui/src/touch/mod.rs, use `mod touch` in this file to declare the module
-68-   --> crates/ui-egui/src/lib.rs:10:1
-69-    |
-70- 10 + mod touch;
---
-82:error[E0433]: cannot find module or crate `mobile` in this scope
-83-   --> crates/ui-egui/src/app.rs:96:21
-84-    |
-85- 96 |             mobile: mobile::State::default(),
-86-    |                     ^^^^^^ use of unresolved module or unlinked crate `mobile`
-87-    |
-88-note: these structs exist but are inaccessible
-89-   --> crates/ui-egui/src/widgets/text_field_menu.rs:67:1
-90-    |
-91- 67 | struct State {
-92-    | ^^^^^^^^^^^^ `crate::text_field_menu::State`: not accessible
-93-    |
-94-   ::: crates/ui-egui/src/tools/transform_fx.rs:366:1
-95-    |
-96-366 | struct State {
---
-115:error[E0433]: cannot find module or crate `gallery` in this scope
-116-  --> crates/ui-egui/src/app.rs:97:22
-117-   |
-118-97 |             gallery: gallery::Gallery::default(),
-119-   |                      ^^^^^^^ use of unresolved module or unlinked crate `gallery`
-120-   |
-121-help: to make use of source file crates/ui-egui/src/gallery.rs, use `mod gallery` in this file to declare the module
-122-  --> crates/ui-egui/src/lib.rs:10:1
-123-   |
-124-10 + mod gallery;
-125-   |
-126-help: consider importing this struct
-127-   |
-128- 1 + use crate::gallery::Gallery;
-129-   |
---
-158:error: could not compile `photocraft-ui-egui` (lib) due to 3 previous errors; 3 warnings emitted
-159-warning: build failed, waiting for other jobs to finish...
-160-note: If the build failed due to a missing target, you can run this command:
-161-note: 
-162-note:     rustup target install aarch64-linux-android
+90:warning: unused import: `Instant`
+91-  --> apps/photocreate-android/src/lib.rs:32:27
+92-   |
+93-32 | use std::time::{Duration, Instant};
+94-   |                           ^^^^^^^
+95-   |
+96-   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+97-
+98-warning: constant `PREFS_EVERY` is never used
+99-  --> apps/photocreate-android/src/lib.rs:44:7
+100-   |
+101-44 | const PREFS_EVERY: Duration = Duration::from_secs(3);
+102-   |       ^^^^^^^^^^^
+103-   |
+104-   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
 
 ==== TAIL ====
-   Compiling photocraft-raw v0.16.0 (/home/runner/work/photocreate/photocreate/crates/raw)
-   Compiling accesskit_winit v0.34.1
-   Compiling photocraft-affinity v0.16.0 (/home/runner/work/photocreate/photocreate/crates/affinity)
-   Compiling photocraft-ui-egui v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ui-egui)
-   Compiling photocraft-io v0.16.0 (/home/runner/work/photocreate/photocreate/crates/io)
-   Compiling egui-winit v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
-   Compiling photocraft-plugins v0.16.0 (/home/runner/work/photocreate/photocreate/crates/plugins)
-   Compiling egui-wgpu v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
-   Compiling photocraft-ops v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ops)
-   Compiling photocraft-ipp v0.16.0 (/home/runner/work/photocreate/photocreate/crates/ipp)
-   Compiling photocraft-engine v0.16.0 (/home/runner/work/photocreate/photocreate/crates/engine)
-   Compiling eframe v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
-   Compiling photocraft-gpu v0.16.0 (/home/runner/work/photocreate/photocreate/crates/gpu)
-error[E0433]: cannot find module or crate `touch` in this scope
-   --> crates/ui-egui/src/app.rs:95:20
-    |
- 95 |             touch: touch::Touch::new(),
-    |                    ^^^^^ use of unresolved module or unlinked crate `touch`
-    |
-note: struct `crate::wheel_nav::Touch` exists but is inaccessible
-   --> crates/ui-egui/src/canvas/wheel_nav.rs:288:1
-    |
-288 | struct Touch {
-    | ^^^^^^^^^^^^ not accessible
-help: to make use of source file crates/ui-egui/src/touch/mod.rs, use `mod touch` in this file to declare the module
-   --> crates/ui-egui/src/lib.rs:10:1
-    |
- 10 + mod touch;
-    |
-help: consider importing this struct
-    |
-  1 + use crate::touch::Touch;
-    |
-help: if you import `Touch`, refer to it directly
-    |
- 95 -             touch: touch::Touch::new(),
- 95 +             touch: Touch::new(),
-    |
-
-error[E0433]: cannot find module or crate `mobile` in this scope
-   --> crates/ui-egui/src/app.rs:96:21
-    |
- 96 |             mobile: mobile::State::default(),
-    |                     ^^^^^^ use of unresolved module or unlinked crate `mobile`
-    |
-note: these structs exist but are inaccessible
-   --> crates/ui-egui/src/widgets/text_field_menu.rs:67:1
-    |
- 67 | struct State {
-    | ^^^^^^^^^^^^ `crate::text_field_menu::State`: not accessible
-    |
-   ::: crates/ui-egui/src/tools/transform_fx.rs:366:1
-    |
-366 | struct State {
-    | ^^^^^^^^^^^^ `crate::transform_fx::State`: not accessible
-help: to make use of source file crates/ui-egui/src/mobile.rs, use `mod mobile` in this file to declare the module
-   --> crates/ui-egui/src/lib.rs:10:1
-    |
- 10 + mod mobile;
-    |
-help: consider importing one of these structs
-    |
-  1 + use crate::mobile::State;
-    |
-  1 + use crate::monitor_status::State;
-    |
-help: if you import `State`, refer to it directly
-    |
- 96 -             mobile: mobile::State::default(),
- 96 +             mobile: State::default(),
-    |
-
-error[E0433]: cannot find module or crate `gallery` in this scope
-  --> crates/ui-egui/src/app.rs:97:22
-   |
-97 |             gallery: gallery::Gallery::default(),
-   |                      ^^^^^^^ use of unresolved module or unlinked crate `gallery`
-   |
-help: to make use of source file crates/ui-egui/src/gallery.rs, use `mod gallery` in this file to declare the module
-  --> crates/ui-egui/src/lib.rs:10:1
-   |
-10 + mod gallery;
-   |
-help: consider importing this struct
-   |
- 1 + use crate::gallery::Gallery;
-   |
-help: if you import `Gallery`, refer to it directly
-   |
-97 -             gallery: gallery::Gallery::default(),
-97 +             gallery: Gallery::default(),
-   |
-
-warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead
-   --> crates/ui-egui/src/gallery.rs:278:31
-    |
-278 |     egui::Area::new(egui::Id::new("gallery-toast")).anchor(Align2::CENTER_BOTTOM, [0.0, -88.0]).interactable(false).order(egui::Ord...
-    |                               ^^^
-    |
-    = note: `#[warn(deprecated)]` on by default
-
-warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead
-   --> crates/ui-egui/src/mobile.rs:143:27
-    |
-143 |             .id(egui::Id::new(("mobile-panel", g.key())))
-    |                           ^^^
-
-warning: use of deprecated associated function `egui::Id::new`: Use `Id::unique` (for a globally unique id) or `IdSalt::new` (for a locally unique salt) instead
-   --> crates/ui-egui/src/touch/mod.rs:360:50
-    |
-360 |         let mut area = egui::Area::new(egui::Id::new("photocraft_touch_bar"))
     |                                                  ^^^
 
-For more information about this error, try `rustc --explain E0433`.
-warning: `photocraft-ui-egui` (lib) generated 3 warnings
-error: could not compile `photocraft-ui-egui` (lib) due to 3 previous errors; 3 warnings emitted
-warning: build failed, waiting for other jobs to finish...
-note: If the build failed due to a missing target, you can run this command:
-note: 
-note:     rustup target install aarch64-linux-android
+warning: variant `Scrolling` is never constructed
+   --> crates/ui-egui/src/touch/gesture.rs:115:5
+    |
+104 | enum Mode {
+    |      ---- variant in this enum
+...
+115 |     Scrolling {
+    |     ^^^^^^^^^
+    |
+    = note: `Mode` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `photocraft-ui-egui` (lib) generated 4 warnings
+   Compiling photocreate-android v0.16.0 (/home/runner/work/photocreate/photocreate/apps/photocreate-android)
+warning: unused import: `Instant`
+  --> apps/photocreate-android/src/lib.rs:32:27
+   |
+32 | use std::time::{Duration, Instant};
+   |                           ^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `PREFS_EVERY` is never used
+  --> apps/photocreate-android/src/lib.rs:44:7
+   |
+44 | const PREFS_EVERY: Duration = Duration::from_secs(3);
+   |       ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `config_dir` is never used
+   --> apps/photocreate-android/src/lib.rs:130:4
+    |
+130 | fn config_dir() -> Option<PathBuf> {
+    |    ^^^^^^^^^^
+
+warning: `photocreate-android` (lib) generated 3 warnings (run `cargo fix --lib -p photocreate-android` to apply 1 suggestion)
+    Finished `release` profile [optimized] target(s) in 8m 25s
+     Copying libraries to /home/runner/work/photocreate/photocreate/android/app/src/main/jniLibs
+Starting a Gradle Daemon (subsequent builds will be faster)
+
+> Configure project :app
+w: file:///home/runner/work/photocreate/photocreate/android/app/build.gradle.kts:36:5: 'fun BaseAppModuleExtension.kotlinOptions(configure: Action<KotlinJvmOptions>): Unit' is deprecated. The kotlinOptions types are deprecated, please migrate to the compilerOptions types. More details are here: https://kotl.in/u1r8ln.
+
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:mergeReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:parseReleaseLocalResources
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:processReleaseManifestForPackage
+> Task :app:javaPreCompileRelease
+> Task :app:extractProguardFiles
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:processReleaseResources
+> Task :app:mergeReleaseNativeLibs
+> Task :app:desugarReleaseFileDependencies
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:mergeReleaseStartupProfile
+
+> Task :app:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libphotocreate_android.so.
+
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:mergeReleaseArtProfile
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:collectReleaseDependencies
+> Task :app:sdkReleaseDependencyData
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :app:optimizeReleaseResources
+> Task :app:mergeExtDexRelease
+> Task :app:compileReleaseKotlin
+> Task :app:compileReleaseJavaWithJavac NO-SOURCE
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:dexBuilderRelease
+> Task :app:mergeReleaseGlobalSynthetics
+> Task :app:processReleaseJavaRes
+> Task :app:mergeReleaseJavaResource
+> Task :app:mergeDexRelease
+> Task :app:compileReleaseArtProfile
+
+> Task :app:packageRelease
+There are no .so files available to package in the APK for x86_64.
+
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:assembleRelease
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793177672112.json
+
+[Incubating] Problems report is available at: file:///home/runner/work/photocreate/photocreate/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 1m 11s
+47 actionable tasks: 47 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
