@@ -1,21 +1,21 @@
 
 ==== TAIL ====
-[1m[94m399[0m [91m- [0m                [91mtouch::[0mAction::DoubleTapUndo => {
-[1m[94m399[0m [92m+ [0m                Action::DoubleTapUndo => {
-    [1m[94m|[0m
-
-[1m[91merror[E0433][0m[1m: cannot find module or crate `gallery` in this scope[0m
-   [1m[94m--> [0mcrates/ui-egui/src/app/frame.rs:408:9
-    [1m[94m|[0m
-[1m[94m408[0m [1m[94m|[0m         gallery::toast(self, ctx);
-    [1m[94m|[0m         [1m[91m^^^^^^^[0m [1m[91muse of unresolved module or unlinked crate `gallery`[0m
-    [1m[94m|[0m
-    [1m[94m= [0m[1mhelp[0m: if you wanted to use a crate named `gallery`, use `cargo add gallery` to add it to your `Cargo.toml`
-[1m[96mhelp[0m: consider importing this module
-    [1m[94m|[0m
-[1m[94m  1[0m [92m+ use crate::gallery;[0m
-    [1m[94m|[0m
-
+[1m[92m   Compiling[0m photocraft-doc v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/doc)
+[1m[92m   Compiling[0m photocraft-algo v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/algo)
+[1m[92m   Compiling[0m photocraft-vector v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/vector)
+[1m[92m   Compiling[0m photocraft-compose v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/compose)
+[1m[92m   Compiling[0m photocraft-psd v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/psd)
+[1m[92m   Compiling[0m photocraft-raw v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/raw)
+[1m[92m   Compiling[0m photocraft-format v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/format)
+[1m[92m   Compiling[0m photocraft-paint v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/paint)
+[1m[92m   Compiling[0m photocraft-affinity v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/affinity)
+[1m[92m   Compiling[0m photocraft-ui-egui v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/ui-egui)
+[1m[92m   Compiling[0m photocraft-io v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/io)
+[1m[92m   Compiling[0m photocraft-plugins v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/plugins)
+[1m[92m   Compiling[0m photocraft-ops v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/ops)
+[1m[92m   Compiling[0m photocraft-ipp v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/ipp)
+[1m[92m   Compiling[0m photocraft-engine v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/engine)
+[1m[92m   Compiling[0m photocraft-gpu v0.16.0 (/Users/runner/work/photocreate/photocreate/crates/gpu)
 [1m[91merror[E0433][0m[1m: cannot find module or crate `touch` in this scope[0m
    [1m[94m--> [0mcrates/ui-egui/src/app.rs:95:20
     [1m[94m|[0m
@@ -118,5 +118,5 @@
 
 [1mFor more information about this error, try `rustc --explain E0433`.[0m
 [1m[33mwarning[0m: `photocraft-ui-egui` (lib) generated 3 warnings
-[1m[91merror[0m: could not compile `photocraft-ui-egui` (lib) due to 13 previous errors; 3 warnings emitted
+[1m[91merror[0m: could not compile `photocraft-ui-egui` (lib) due to 3 previous errors; 3 warnings emitted
 [1m[33mwarning[0m: build failed, waiting for other jobs to finish...
